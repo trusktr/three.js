@@ -38,7 +38,7 @@ EllipseCurve.prototype.getPoint = function ( t, optionalTarget ) {
 
 	// ensures that deltaAngle is 0 .. 2 PI
 	while ( deltaAngle < 0 ) deltaAngle += twoPi;
-	while ( deltaAngle > twoPi ) deltaAngle -= twoPi;
+	while ( deltaAngle > twoPi ) deltaAngle -= twoPi;;
 
 	if ( deltaAngle < Number.EPSILON ) {
 
