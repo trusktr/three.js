@@ -91,6 +91,7 @@ function WebGLShadowMap( _renderer, _objects, maxTextureSize ) {
 
 	this.type = PCFShadowMap;
 
+	this.renderPlanesReverseSided = false;
 	this.renderReverseSided = true;
 	this.renderSingleSided = true;
 
@@ -359,9 +360,16 @@ function WebGLShadowMap( _renderer, _objects, maxTextureSize ) {
 		}
 
 		if ( scope.renderReverseSided ) {
+			
+			var type = geometry.type;
+			var isPlane = object.isMesh && ( type === 'PlaneGeometry' || type === 'PlaneBufferGeometry' );
 
-			if ( side === FrontSide ) side = BackSide;
-			else if ( side === BackSide ) side = FrontSide;
+			if ( ! isPlane || ( isPlane && scope.renderPlanesReverseSided ) ) {
+
+				if ( side === FrontSide ) side = BackSide;
+				else if ( side === BackSide ) side = FrontSide;
+
+			}
 
 		}
 
@@ -395,18 +403,6 @@ function WebGLShadowMap( _renderer, _objects, maxTextureSize ) {
 		if ( visible && ( object.isMesh || object.isLine || object.isPoints ) ) {
 
 			if ( object.castShadow && ( ! object.frustumCulled || _frustum.intersectsObject( object ) ) ) {
-
-				var type = object.geometry.type;
-				
-				if ( object.isMesh && ( type === 'PlaneGeometry' || type === 'PlaneBufferGeometry' ) ) {
-
-					scope.renderReverseSided = false;
-
-				} else {
-
-					scope.renderReverseSided = true;
-
-				}
 
 				object.modelViewMatrix.multiplyMatrices( shadowCamera.matrixWorldInverse, object.matrixWorld );
 
