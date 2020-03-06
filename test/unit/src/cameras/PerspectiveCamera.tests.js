@@ -126,6 +126,9 @@ export default QUnit.module( 'Cameras', () => {
 				0, 0, - 1, 0
 			);
 
+			console.log(m.elements)
+			process.exit(0)
+
 			// assert.ok( reference.equals(m) );
 			assert.ok( matrixEquals4( reference, m, 0.000001 ) );
 
