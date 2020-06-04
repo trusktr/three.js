@@ -105,6 +105,8 @@ export default QUnit.module( 'Cameras', () => {
 		} );
 
 		QUnit.test( "updateProjectionMatrix", ( assert ) => {
+			global.glasDebug = true
+			console.log('GLAS ############# updateProjectionMatrix test')
 
 			var cam = new PerspectiveCamera( 75, 16 / 9, 0.1, 300.0 );
 
@@ -126,12 +128,13 @@ export default QUnit.module( 'Cameras', () => {
 				0, 0, - 1, 0
 			);
 
-			console.log(m.elements)
-			process.exit(0)
+			// console.log(m.elements)
+			// process.exit(0)
 
 			// assert.ok( reference.equals(m) );
 			assert.ok( matrixEquals4( reference, m, 0.000001 ) );
 
+			global.glasDebug = false
 		} );
 
 		QUnit.todo( "toJSON", ( assert ) => {

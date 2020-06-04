@@ -187,6 +187,7 @@ PerspectiveCamera.prototype = Object.assign( Object.create( Camera.prototype ), 
 	},
 
 	updateProjectionMatrix: function () {
+		if (global.glasDebug) console.log( 'GLAS --- updateProjectionMatrix' );
 
 		var near = this.near,
 			top = near * Math.tan( _Math.DEG2RAD * 0.5 * this.fov ) / this.zoom,
@@ -194,6 +195,8 @@ PerspectiveCamera.prototype = Object.assign( Object.create( Camera.prototype ), 
 			width = this.aspect * height,
 			left = - 0.5 * width,
 			view = this.view;
+
+		if (global.glasDebug) console.log('GLAS ' + near.toString() +' '+ top.toString() +' '+ height.toString() +' '+ width.toString() +' '+ left.toString())
 
 		if ( this.view !== null && this.view.enabled ) {
 
@@ -209,8 +212,11 @@ PerspectiveCamera.prototype = Object.assign( Object.create( Camera.prototype ), 
 
 		var skew = this.filmOffset;
 		if ( skew !== 0 ) left += near * skew / this.getFilmWidth();
+		if (global.glasDebug) console.log('GLAS ' + skew.toString() +' '+ left.toString())
 
 		this.projectionMatrix.makePerspective( left, left + width, top, top - height, near, this.far );
+		if (global.glasDebug) console.log('GLAS ' + left.toString() +' '+ (left + width).toString() +' '+ top.toString() +' '+ (top - height).toString() +' '+ near.toString() +' '+ this.far.toString())
+		if (global.glasDebug) console.log('GLAS ' + this.projectionMatrix.elements.toString())
 
 		this.projectionMatrixInverse.getInverse( this.projectionMatrix );
 
