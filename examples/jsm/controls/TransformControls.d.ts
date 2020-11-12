@@ -3,6 +3,7 @@ import {
 	Camera,
 	MOUSE
 } from '../../../src/Three';
+import { Raycaster } from '../../../src/Three';
 
 export class TransformControls extends Object3D {
 
@@ -31,6 +32,7 @@ export class TransformControls extends Object3D {
 		MIDDLE: MOUSE;
 		RIGHT: MOUSE;
 	};
+	raycaster: Raycaster;
 
 	attach( object: Object3D ): this;
 	detach(): this;
