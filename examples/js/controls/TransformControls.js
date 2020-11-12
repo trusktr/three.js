@@ -46,11 +46,11 @@ THREE.TransformControls = function ( camera, domElement ) {
 
 	// Reusable utility variables
 
-	var raycaster = new THREE.Raycaster();
+	this.raycaster = new THREE.Raycaster();
 
-	function intersectObjectWithRay( object, raycaster, includeInvisible ) {
+	function intersectObjectWithRay( object, includeInvisible ) {
 
-		var allIntersections = raycaster.intersectObject( object, true );
+		var allIntersections = scope.raycaster.intersectObject( object, true );
 
 		for ( var i = 0; i < allIntersections.length; i ++ ) {
 
@@ -239,9 +239,9 @@ THREE.TransformControls = function ( camera, domElement ) {
 
 		if ( this.object === undefined || this.dragging === true ) return;
 
-		raycaster.setFromCamera( pointer, this.camera );
+		this.raycaster.setFromCamera( pointer, this.camera );
 
-		var intersect = intersectObjectWithRay( _gizmo.picker[ this.mode ], raycaster );
+		var intersect = intersectObjectWithRay( _gizmo.picker[ this.mode ] );
 
 		if ( intersect ) {
 
@@ -261,9 +261,9 @@ THREE.TransformControls = function ( camera, domElement ) {
 
 		if ( this.axis !== null ) {
 
-			raycaster.setFromCamera( pointer, this.camera );
+			this.raycaster.setFromCamera( pointer, this.camera );
 
-			var planeIntersect = intersectObjectWithRay( _plane, raycaster, true );
+			var planeIntersect = intersectObjectWithRay( _plane, true );
 
 			if ( planeIntersect ) {
 
@@ -329,9 +329,9 @@ THREE.TransformControls = function ( camera, domElement ) {
 
 		if ( object === undefined || axis === null || this.dragging === false || pointer.button !== - 1 ) return;
 
-		raycaster.setFromCamera( pointer, this.camera );
+		this.raycaster.setFromCamera( pointer, this.camera );
 
-		var planeIntersect = intersectObjectWithRay( _plane, raycaster, true );
+		var planeIntersect = intersectObjectWithRay( _plane, true );
 
 		if ( ! planeIntersect ) return;
 
