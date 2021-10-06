@@ -786,6 +786,23 @@ Object.assign( ObjectLoader.prototype, {
 
 					break;
 
+				case "SceneNode":
+					const options = {
+						frameID: data.frameID,
+						pose: new ROSLIB.Pose( data.pose ),
+						visible: true,
+
+						// Other options are ignored by SceneNode.toJSON, like
+						// tfClient (the user would need to "hydrate" the
+						// imported scene with a tfClient manually), and
+						// object (because that's already handled generically
+						// for all objects' children in the below code of this method).
+					};
+
+					object = new ROS3D.SceneNode( options );
+
+					break;
+
 				default:
 
 					object = new Object3D();

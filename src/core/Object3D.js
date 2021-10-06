@@ -650,7 +650,15 @@ Object3D.prototype = Object.assign( Object.create( EventDispatcher.prototype ), 
 		if ( this.name !== '' ) object.name = this.name;
 		if ( this.castShadow === true ) object.castShadow = true;
 		if ( this.receiveShadow === true ) object.receiveShadow = true;
+
+		// This causes `object.visible` to be `undefined`, and normally that
+		// causes deserialization of Three.js objects to use their default
+		// value of `true`, but because SceneNode defaults to a value of
+		// `false`, an `undefined` value for `object.visible` causes a
+		// `SceneNode` instance to have a falsy value even if `object.visible`
+		// is `true` right here.
 		if ( this.visible === false ) object.visible = false;
+
 		if ( JSON.stringify( this.userData ) !== '{}' ) object.userData = this.userData;
 
 		object.matrix = this.matrix.toArray();
