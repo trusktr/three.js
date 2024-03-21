@@ -4,7 +4,7 @@ import { LinearInterpolant } from '../math/interpolants/LinearInterpolant.js';
 import { PropertyBinding } from './PropertyBinding.js';
 import { PropertyMixer } from './PropertyMixer.js';
 import { AnimationClip } from './AnimationClip.js';
-import { NormalAnimationBlendMode } from '../constants.js';
+import { NormalAnimationBlendMode, } from '../constants.js';
 
 
 const _controlInterpolantsResultBuffer = new Float32Array( 1 );
