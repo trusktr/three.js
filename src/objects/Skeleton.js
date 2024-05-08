@@ -14,6 +14,8 @@ class Skeleton {
 
 	constructor( bones = [], boneInverses = [] ) {
 
+		this.isSkeleton = true;
+
 		this.uuid = MathUtils.generateUUID();
 
 		this.bones = bones.slice( 0 );

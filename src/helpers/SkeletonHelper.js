@@ -15,7 +15,7 @@ class SkeletonHelper extends LineSegments {
 
 	constructor( object ) {
 
-		const bones = getBoneList( object );
+		const [ bones, skeletons ] = getBonesAndSkeletons( object );
 
 		const geometry = new BufferGeometry();
 
@@ -53,6 +53,7 @@ class SkeletonHelper extends LineSegments {
 
 		this.root = object;
 		this.bones = bones;
+		this.skeletons = skeletons;
 
 		this.matrix = object.matrixWorld;
 		this.matrixAutoUpdate = false;
@@ -104,25 +105,20 @@ class SkeletonHelper extends LineSegments {
 }
 
 
-function getBoneList( object ) {
+function getBonesAndSkeletons( object ) {
 
-	const boneList = [];
+	const bones = [];
+	const skeletons = new Set(); // Set for uniqueness
 
-	if ( object.isBone === true ) {
+	object.traverse( node => {
 
-		boneList.push( object );
+		if ( node.isBone ) bones.push( node );
+		if ( node.isSkinnedMesh ) skeletons.add( node.skeleton );
 
-	}
+	} );
 
-	for ( let i = 0; i < object.children.length; i ++ ) {
-
-		boneList.push.apply( boneList, getBoneList( object.children[ i ] ) );
-
-	}
-
-	return boneList;
+	return [ bones, [ ...skeletons ]];
 
 }
-
 
 export { SkeletonHelper };

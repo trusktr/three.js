@@ -26,18 +26,25 @@ function retarget( target, source, options = {} ) {
 	options.hip = options.hip !== undefined ? options.hip : 'hip';
 	options.names = options.names || {};
 
-	const sourceBones = source.isObject3D ? source.skeleton.bones : getBones( source ),
-		bones = target.isObject3D ? target.skeleton.bones : getBones( target );
+	const sourceBones = getBones( source ),
+		bones = getBones( target );
 
 	let bindBones,
-		bone, name, boneTo,
 		bonesPosition;
 
 	// reset bones
 
-	if ( target.isObject3D ) {
+	if ( target.isSkinnedMesh ) {
 
 		target.skeleton.pose();
+
+	} else if ( target.isSkeleton ) {
+
+		target.pose();
+
+	} else if ( target.isSkeletonHelper ) {
+
+		target.skeletons.forEach( skel => skel.pose() );
 
 	} else {
 
@@ -82,12 +89,12 @@ function retarget( target, source, options = {} ) {
 
 		for ( let i = 0; i < bones.length; ++ i ) {
 
-			bone = bones[ i ];
-			name = options.names[ bone.name ] || bone.name;
+			const bone = bones[ i ];
+			const sourceName = options.names[ bone.name ] || bone.name;
 
-			if ( options.offsets[ name ] ) {
+			if ( options.offsets[ sourceName ] ) {
 
-				bone.matrix.multiply( options.offsets[ name ] );
+				bone.matrix.multiply( options.offsets[ sourceName ] );
 
 				bone.matrix.decompose( bone.position, bone.quaternion, bone.scale );
 
@@ -103,10 +110,10 @@ function retarget( target, source, options = {} ) {
 
 	for ( let i = 0; i < bones.length; ++ i ) {
 
-		bone = bones[ i ];
-		name = options.names[ bone.name ] || bone.name;
+		const bone = bones[ i ];
+		const sourceName = options.names[ bone.name ] || bone.name;
 
-		boneTo = getBoneByName( name, sourceBones );
+		const boneTo = getBoneByName( sourceName, sourceBones );
 
 		globalMatrix.copy( bone.matrixWorld );
 
@@ -134,10 +141,13 @@ function retarget( target, source, options = {} ) {
 
 			globalMatrix.makeRotationFromQuaternion( quat.setFromRotationMatrix( relativeMatrix ) );
 
-			if ( target.isObject3D ) {
+			if ( target.isObject3D || target.isSkeleton ) {
 
-				const boneIndex = bones.indexOf( bone ),
-					wBindMatrix = bindBones ? bindBones[ boneIndex ] : bindBoneMatrix.copy( target.skeleton.boneInverses[ boneIndex ] ).invert();
+				const skeleton = target.isSkinnedMesh ? target.skeleton : target.isSkeletonHelper ? target.skeletons[ 0 ] : target,
+					boneIndex = bones.indexOf( bone ),
+					wBindMatrix = bindBones ? bindBones[ boneIndex ] : bindBoneMatrix.copy( skeleton.boneInverses[ boneIndex ] ).invert();
+
+				console.log( 'skeleton?', bindBones, skeleton );
 
 				globalMatrix.multiply( wBindMatrix );
 
@@ -158,7 +168,7 @@ function retarget( target, source, options = {} ) {
 
 		}
 
-		if ( options.preserveHipPosition && name === options.hip ) {
+		if ( options.preserveHipPosition && sourceName === options.hip ) {
 
 			bone.matrix.setPosition( pos.set( 0, bone.position.y, 0 ) );
 
@@ -174,10 +184,10 @@ function retarget( target, source, options = {} ) {
 
 		for ( let i = 0; i < bones.length; ++ i ) {
 
-			bone = bones[ i ];
-			name = options.names[ bone.name ] || bone.name;
+			const bone = bones[ i ];
+			const sourceName = options.names[ bone.name ] || bone.name;
 
-			if ( name !== options.hip ) {
+			if ( sourceName !== options.hip ) {
 
 				bone.position.copy( bonesPosition[ i ] );
 
@@ -204,6 +214,8 @@ function retargetClip( target, source, clip, options = {} ) {
 	options.fps = options.fps !== undefined ? options.fps : ( Math.max( ...clip.tracks.map( track => track.times.length ) ) / clip.duration );
 	options.names = options.names || [];
 
+	// If source is a skeleton, get a skeleton helper because we can't run
+	// AnimationMixer on a non-Object3D.
 	if ( ! source.isObject3D ) {
 
 		source = getHelperFromSkeleton( source );
@@ -214,15 +226,15 @@ function retargetClip( target, source, clip, options = {} ) {
 		delta = clip.duration / ( numFrames - 1 ),
 		convertedTracks = [],
 		mixer = new AnimationMixer( source ),
-		bones = getBones( target.skeleton ),
+		bones = getBones( target ),
 		boneDatas = [];
-	let positionOffset,
-		bone, boneTo, boneData,
-		name;
+	let positionOffset;
 
 	mixer.clipAction( clip ).play();
 	mixer.update( 0 );
 
+	// Do we need to instead call updateWorldMatrix(true, true) so that parent
+	// transforms are taken into account?
 	source.updateMatrixWorld();
 
 	for ( let i = 0; i < numFrames; ++ i ) {
@@ -233,14 +245,14 @@ function retargetClip( target, source, clip, options = {} ) {
 
 		for ( let j = 0; j < bones.length; ++ j ) {
 
-			name = options.names[ bones[ j ].name ] || bones[ j ].name;
+			const name = options.names[ bones[ j ].name ] || bones[ j ].name;
 
-			boneTo = getBoneByName( name, source.skeleton );
+			const boneTo = getBoneByName( name, source );
 
 			if ( boneTo ) {
 
-				bone = bones[ j ];
-				boneData = boneDatas[ j ] = boneDatas[ j ] || { bone: bone };
+				const bone = bones[ j ];
+				const boneData = boneDatas[ j ] = boneDatas[ j ] || { bone: bone };
 
 				if ( options.hip === name ) {
 
@@ -306,7 +318,7 @@ function retargetClip( target, source, clip, options = {} ) {
 
 	for ( let i = 0; i < boneDatas.length; ++ i ) {
 
-		boneData = boneDatas[ i ];
+		const boneData = boneDatas[ i ];
 
 		if ( boneData ) {
 
@@ -377,9 +389,9 @@ function clone( source ) {
 
 // internal helper
 
-function getBoneByName( name, skeleton ) {
+function getBoneByName( name, obj ) {
 
-	for ( let i = 0, bones = getBones( skeleton ); i < bones.length; i ++ ) {
+	for ( let i = 0, bones = getBones( obj ); i < bones.length; i ++ ) {
 
 		if ( name === bones[ i ].name )
 
@@ -389,17 +401,32 @@ function getBoneByName( name, skeleton ) {
 
 }
 
-function getBones( skeleton ) {
+function getBones( obj ) {
 
-	return Array.isArray( skeleton ) ? skeleton : skeleton.bones;
+	return obj.isSkinnedMesh
+		? obj.skeleton.bones
+		: obj.isSkeleton || obj.isSkeletonHelper
+			? obj.bones
+			: Array.isArray( obj )
+				? obj
+				: [];
 
 }
-
 
 function getHelperFromSkeleton( skeleton ) {
 
 	const source = new SkeletonHelper( skeleton.bones[ 0 ] );
-	source.skeleton = skeleton;
+	console.log( ' ----------------------------- source before', source.skeletons );
+	source.skeletons[ 0 ] = skeleton;
+	// source.skeleton = skeleton;
+	Object.defineProperty( source, 'skeleton', { get() {
+
+		console.log( ' ########## GET SKELETON' );
+		// debugger
+		return skeleton;
+
+	} } );
+	console.log( ' ----------------------------- source', source.skeletons );
 
 	return source;
 
