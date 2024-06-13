@@ -7,7 +7,7 @@
 		<link type="text/css" rel="stylesheet" href="main.css">
 		<style>
 			body {
-				background-color: #eee;
+				background-color: #333;
 				color: #444;
 			}
 			a {
@@ -53,8 +53,8 @@
 				scene.add( skeletonHelper );
 
 				// play animation
-				mixer = new THREE.AnimationMixer( result.skeleton.bones[ 0 ] );
-				mixer.clipAction( result.clip ).play();
+				// mixer = new THREE.AnimationMixer( result.skeleton.bones[ 0 ] );
+				// mixer.clipAction( result.clip ).play();
 
 			} );
 
@@ -64,7 +64,7 @@
 				camera.position.set( 0, 200, 300 );
 
 				scene = new THREE.Scene();
-				scene.background = new THREE.Color( 0xeeeeee );
+				scene.background = new THREE.Color( 0x333333 );
 
 				scene.add( new THREE.GridHelper( 400, 10 ) );
 

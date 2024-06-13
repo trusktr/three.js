@@ -7,7 +7,7 @@
 		<link type="text/css" rel="stylesheet" href="main.css">
 		<style>
 			body {
-				background-color: #bfe3dd;
+				background-color: #333;
 				color: #000;
 			}
 
@@ -27,22 +27,22 @@
 			<a href="https://artstation.com/glenatron" target="_blank" rel="noopener">Glen Fox</a>, CC Attribution.
 		</div>
 
-		<!-- <script type="importmap">
+		<script type="importmap">
 			{
 				"imports": {
 					"three": "../build/three.module.js",
 					"three/addons/": "./jsm/"
 				}
 			}
-		</script> -->
-		<script type="importmap">
+		</script>
+		<!-- <script type="importmap">
 			{
 				"imports": {
 					"three": "https://unpkg.com/three@0.163.x/build/three.module.js",
 					"three/addons/": "https://unpkg.com/three@0.163.x/examples/jsm/"
 				}
 			}
-		</script>
+		</script> -->
 
 		<script type="module">
 
@@ -73,7 +73,7 @@
 			const pmremGenerator = new THREE.PMREMGenerator( renderer );
 
 			const scene = new THREE.Scene();
-			scene.background = new THREE.Color( 0xbfe3dd );
+			scene.background = new THREE.Color( 0x333333 );
 			scene.environment = pmremGenerator.fromScene( new RoomEnvironment( renderer ), 0.04 ).texture;
 
 			const camera = new THREE.PerspectiveCamera( 40, window.innerWidth / window.innerHeight, 1, 1000 );
@@ -104,8 +104,8 @@
 					// ours
 					// new GLTFLoader().load( 'models/gltf/unreal_manny.glb', resolve, undefined, reject );
 					// new GLTFLoader().load( 'models/gltf/pete/pete.glb', resolve, undefined, reject );
-					// new GLTFLoader().load( 'models/gltf/michelle/michelle.gltf', resolve, undefined, reject );
-					new GLTFLoader().load( 'models/gltf/lola-walking.glb', resolve, undefined, reject );
+					new GLTFLoader().load( 'models/gltf/michelle/michelle.gltf', resolve, undefined, reject );
+					// new GLTFLoader().load( 'models/gltf/lola-walking.glb', resolve, undefined, reject );
 
 					// three's
 					// new GLTFLoader().load( 'models/gltf/Michelle.glb', resolve, undefined, reject );
@@ -121,7 +121,7 @@
 
 			]);
 
-			const playAnimations = true;
+			const playAnimations = false;
 			const timeScale = 1;
 
 			let targetMixer;
@@ -151,7 +151,7 @@
 				sourceModel.scene.position.x -= 1.5;
 				scene.add( sourceModel.scene );
 
-				sourceSkeletonHelper = new THREE.SkeletonHelper( sourceModel.scene );
+				sourceSkeletonHelper = new THREE.SkeletonHelper( sourceModel.scene, { axesHelperSize: 0 } );
 				scene.add( sourceSkeletonHelper );
 				console.log( 'source skeleton helper', sourceSkeleton );
 
@@ -224,7 +224,7 @@
 				// root.rotation.x -= Math.PI;
 				scene.add( root );
 
-				sourceSkeletonHelper = new THREE.SkeletonHelper( root );
+				sourceSkeletonHelper = new THREE.SkeletonHelper( root, { axesHelperSize: 0.1 } );
 				scene.add( sourceSkeletonHelper );
 				console.log( 'source skeleton helper', sourceSkeleton );
 
@@ -251,7 +251,7 @@
 
 				const targetSkin = targetModel.scene.children[ 0 ].children[ 0 ];
 
-				const targetSkelHelper = new THREE.SkeletonHelper( targetModel.scene );
+				const targetSkelHelper = new THREE.SkeletonHelper( targetModel.scene, { axesHelperSize: 5 } );
 				scene.add( targetSkelHelper );
 
 				const retargetOptions = {
@@ -321,6 +321,9 @@
 
 				targetModel.scene.position.x += 0;
 				scene.add( targetModel.scene );
+
+				const skelHelper = new THREE.SkeletonHelper( targetModel.scene, { axesHelperSize: 10 } );
+				scene.add( skelHelper );
 
 				const targetSkin = targetModel.scene.children[ 0 ].children[ 0 ];
 
@@ -584,9 +587,6 @@
 
 			}
 
-
-			const skelHelper = new THREE.SkeletonHelper( scene );
-			scene.add( skelHelper );
 
 			renderer.setAnimationLoop( animate );
 

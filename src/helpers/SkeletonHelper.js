@@ -1,22 +1,19 @@
-import { LineSegments } from '../objects/LineSegments.js';
-import { Matrix4 } from '../math/Matrix4.js';
-import { LineBasicMaterial } from '../materials/LineBasicMaterial.js';
-import { Color } from '../math/Color.js';
-import { Vector3 } from '../math/Vector3.js';
-import { BufferGeometry } from '../core/BufferGeometry.js';
-import { Float32BufferAttribute } from '../core/BufferAttribute.js';
-import { AxesHelper } from './AxesHelper.js';
+import { LineSegments } from "../objects/LineSegments.js";
+import { Matrix4 } from "../math/Matrix4.js";
+import { LineBasicMaterial } from "../materials/LineBasicMaterial.js";
+import { Color } from "../math/Color.js";
+import { Vector3 } from "../math/Vector3.js";
+import { BufferGeometry } from "../core/BufferGeometry.js";
+import { Float32BufferAttribute } from "../core/BufferAttribute.js";
+import { AxesHelper } from "./AxesHelper.js";
 
 const _vector = /*@__PURE__*/ new Vector3();
 const _boneMatrix = /*@__PURE__*/ new Matrix4();
 const _matrixWorldInv = /*@__PURE__*/ new Matrix4();
 
-
 class SkeletonHelper extends LineSegments {
-
-	constructor( object, options = { axesHelperSize: 0 } ) {
-
-		const [ bones, skeletons ] = getBonesAndSkeletons( object );
+	constructor(object, options = { axesHelperSize: 0 }) {
+		const [bones, skeletons] = getBonesAndSkeletons(object);
 
 		const geometry = new BufferGeometry();
 
@@ -24,126 +21,115 @@ class SkeletonHelper extends LineSegments {
 		const colors = [];
 		const axesHelpers = [];
 
-		const color1 = new Color( 0, 0, 1 );
-		const color2 = new Color( 0, 1, 0 );
+		const color1 = new Color(0, 0, 1);
+		const color2 = new Color(0, 1, 0);
 
-		for ( let i = 0; i < bones.length; i ++ ) {
+		for (let i = 0; i < bones.length; i++) {
+			const bone = bones[i];
 
-			const bone = bones[ i ];
-
-			if ( bone.parent && bone.parent.isBone ) {
-
-				vertices.push( 0, 0, 0 );
-				vertices.push( 0, 0, 0 );
-				colors.push( color1.r, color1.g, color1.b );
-				colors.push( color2.r, color2.g, color2.b );
-
+			if (bone.parent && bone.parent.isBone) {
+				vertices.push(0, 0, 0);
+				vertices.push(0, 0, 0);
+				colors.push(color1.r, color1.g, color1.b);
+				colors.push(color2.r, color2.g, color2.b);
 			}
 
-			if ( options.axesHelperSize > 0 ) {
-
-				const helper = new AxesHelper( options.axesHelperSize );
-				helper.material = new LineBasicMaterial( { vertexColors: true, depthTest: false, depthWrite: false, toneMapped: false, transparent: true } );
+			if (options.axesHelperSize > 0) {
+				const helper = new AxesHelper(options.axesHelperSize);
+				helper.material = new LineBasicMaterial({
+					vertexColors: true,
+					depthTest: false,
+					depthWrite: false,
+					toneMapped: false,
+					transparent: true,
+				});
 				helper.updateMatrixWorld = () => {}; // disable it, we do it here in this class.
 
-				axesHelpers.push( helper );
-
+				axesHelpers.push(helper);
 			}
-
 		}
 
-		geometry.setAttribute( 'position', new Float32BufferAttribute( vertices, 3 ) );
-		geometry.setAttribute( 'color', new Float32BufferAttribute( colors, 3 ) );
+		geometry.setAttribute("position", new Float32BufferAttribute(vertices, 3));
+		geometry.setAttribute("color", new Float32BufferAttribute(colors, 3));
 
-		const material = new LineBasicMaterial( { vertexColors: true, depthTest: false, depthWrite: false, toneMapped: false, transparent: true } );
+		const material = new LineBasicMaterial({
+			vertexColors: true,
+			depthTest: false,
+			depthWrite: false,
+			toneMapped: false,
+			transparent: true,
+		});
 
-		super( geometry, material );
+		super(geometry, material);
 
 		this.isSkeletonHelper = true;
 
-		this.type = 'SkeletonHelper';
+		this.type = "SkeletonHelper";
 
 		this.root = object;
 		this.bones = bones;
 		this.skeletons = skeletons;
 
-		for ( const helper of axesHelpers ) this.add( helper );
+		for (const helper of axesHelpers) this.add(helper);
 		this.axesHelpers = axesHelpers;
 
 		this.matrix = object.matrixWorld;
 		this.matrixAutoUpdate = false;
-
 	}
 
-	updateMatrixWorld( force ) {
-
+	updateMatrixWorld(force) {
 		const bones = this.bones;
 
 		const geometry = this.geometry;
-		const position = geometry.getAttribute( 'position' );
+		const position = geometry.getAttribute("position");
 
-		_matrixWorldInv.copy( this.root.matrixWorld ).invert();
+		_matrixWorldInv.copy(this.root.matrixWorld).invert();
 
-		for ( let i = 0, j = 0; i < bones.length; i ++ ) {
+		for (let i = 0, j = 0; i < bones.length; i++) {
+			const bone = bones[i];
 
-			const bone = bones[ i ];
+			if (bone.parent && bone.parent.isBone) {
+				_boneMatrix.multiplyMatrices(_matrixWorldInv, bone.matrixWorld);
+				_vector.setFromMatrixPosition(_boneMatrix);
+				position.setXYZ(j, _vector.x, _vector.y, _vector.z);
 
-			if ( bone.parent && bone.parent.isBone ) {
-
-				_boneMatrix.multiplyMatrices( _matrixWorldInv, bone.matrixWorld );
-				_vector.setFromMatrixPosition( _boneMatrix );
-				position.setXYZ( j, _vector.x, _vector.y, _vector.z );
-
-				_boneMatrix.multiplyMatrices( _matrixWorldInv, bone.parent.matrixWorld );
-				_vector.setFromMatrixPosition( _boneMatrix );
-				position.setXYZ( j + 1, _vector.x, _vector.y, _vector.z );
+				_boneMatrix.multiplyMatrices(_matrixWorldInv, bone.parent.matrixWorld);
+				_vector.setFromMatrixPosition(_boneMatrix);
+				position.setXYZ(j + 1, _vector.x, _vector.y, _vector.z);
 
 				j += 2;
-
 			}
 
-			const hasAxesHelpers = !! this.axesHelpers.length;
+			const hasAxesHelpers = !!this.axesHelpers.length;
 
-			if ( hasAxesHelpers ) {
-
-				const helper = this.axesHelpers[ i ];
-				helper.matrixWorld.copy( bone.matrixWorld );
-
+			if (hasAxesHelpers) {
+				const helper = this.axesHelpers[i];
+				helper.matrixWorld.copy(bone.matrixWorld);
 			}
-
 		}
 
-		geometry.getAttribute( 'position' ).needsUpdate = true;
+		geometry.getAttribute("position").needsUpdate = true;
 
-		super.updateMatrixWorld( force );
-
+		super.updateMatrixWorld(force);
 	}
 
 	dispose() {
-
 		this.geometry.dispose();
 		this.material.dispose();
-		for ( const helper of this.axesHelpers ) helper.dispose();
-
+		for (const helper of this.axesHelpers) helper.dispose();
 	}
-
 }
 
-
-function getBonesAndSkeletons( object ) {
-
+function getBonesAndSkeletons(object) {
 	const bones = [];
 	const skeletons = new Set(); // Set for uniqueness
 
-	object.traverse( node => {
+	object.traverse((node) => {
+		if (node.isBone) bones.push(node);
+		if (node.isSkinnedMesh) skeletons.add(node.skeleton);
+	});
 
-		if ( node.isBone ) bones.push( node );
-		if ( node.isSkinnedMesh ) skeletons.add( node.skeleton );
-
-	} );
-
-	return [ bones, [ ...skeletons ]];
-
+	return [bones, [...skeletons]];
 }
 
 export { SkeletonHelper };
