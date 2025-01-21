@@ -386,7 +386,7 @@ export const all = /*@__PURE__*/ nodeProxy( MathNode, MathNode.ALL );
  * @param {Node | Number} x - The parameter.
  * @returns {Node<bool>}
  */
-export const any = /*@__PURE__*/ nodeProxy( MathNode, MathNode.ANY );
+export const anyof = /*@__PURE__*/ nodeProxy( MathNode, MathNode.ANY );
 
 /**
  * Converts a quantity in degrees to radians.
