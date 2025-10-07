@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>three.js - WebAssembly Vector2 Tests with Porffor</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+		<link type="text/css" rel="stylesheet" href="main.css">
+		<style>
+			body {
+				font-family: Monospace;
+				background-color: #000;
+				color: #fff;
+				margin: 0px;
+				overflow: hidden;
+			}
+			#info {
+				position: absolute;
+				top: 10px;
+				width: 100%;
+				text-align: center;
+				z-index: 100;
+				display: block;
+			}
+			#output {
+				position: absolute;
+				top: 50px;
+				left: 10px;
+				right: 10px;
+				bottom: 10px;
+				background: #222;
+				padding: 10px;
+				overflow-y: auto;
+				font-size: 12px;
+				line-height: 1.5;
+			}
+			.test-pass { color: #0f0; }
+			.test-fail { color: #f00; }
+			.test-header { 
+				color: #fff; 
+				font-weight: bold; 
+				margin-top: 10px;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="info">
+			<a href="https://threejs.org" target="_blank" rel="noopener">three.js</a> - WebAssembly Vector2 Tests with Porffor
+		</div>
+
+		<div id="output">Loading and running WebAssembly tests...</div>
+
+		<script>
+			// Polyfill for Porffor's expected globals
+			globalThis.process = {
+				argv: [],
+				stdout: { write: (msg) => appendOutput(msg) }
+			};
+
+			const outputEl = document.getElementById('output');
+			
+			function appendOutput(text) {
+				const line = document.createElement('div');
+				const textStr = String(text);
+				
+				// Style based on content
+				if (textStr.includes('✓')) {
+					line.className = 'test-pass';
+				} else if (textStr.includes('✗')) {
+					line.className = 'test-fail';
+				} else if (textStr.includes('---')) {
+					line.className = 'test-header';
+				}
+				
+				line.textContent = textStr;
+				outputEl.appendChild(line);
+				outputEl.scrollTop = outputEl.scrollHeight;
+			}
+
+			// Override console.log to capture output
+			const originalLog = console.log;
+			console.log = function(...args) {
+				originalLog.apply(console, args);
+				appendOutput(args.join(' '));
+			};
+		</script>
+
+		<script type="importmap">
+			{
+				"imports": {
+					"three": "../build/three.module.js",
+					"three/addons/": "./jsm/"
+				}
+			}
+		</script>
+
+		<script type="module">
+			import compile from '../node_modules/porffor/compiler/wrap.js';
+
+			async function compileAndRun(url) {
+				try {
+					appendOutput('Fetching test bundle...');
+					const response = await fetch(url);
+					
+					if (!response.ok) {
+						throw new Error(`Failed to fetch bundle. Status: ${response.status}`);
+					}
+					
+					appendOutput('Compiling to WebAssembly with Porffor...');
+					const source = await response.text();
+					const out = compile(source, [], {
+						// Porffor compile options if needed
+					});
+					
+					appendOutput('Running tests...\n');
+					outputEl.innerHTML = ''; // Clear initial message
+					
+					// Execute the compiled WASM
+					if (out.exports.m) {
+						out.exports.m();
+					} else if (out.exports.main) {
+						out.exports.main();
+					} else {
+						appendOutput('No main export found in WASM module');
+						console.log('Available exports:', Object.keys(out.exports));
+					}
+					
+				} catch (error) {
+					appendOutput(`Error: ${error.message}`);
+					console.error('Detailed error:', error);
+				}
+			}
+
+			// Run the tests
+			compileAndRun('../test/wasm/Vector2.test.bundle.js');
+		</script>
+	</body>
+</html>

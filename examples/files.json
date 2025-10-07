@@ -552,7 +552,8 @@
 		"misc_exporter_usdz",
 		"misc_exporter_exr",
 		"misc_exporter_ktx2",
-		"misc_raycaster_helper"
+		"misc_raycaster_helper",
+		"misc_wasm_vector2_tests"
 	],
 	"css2d": [
 		"css2d_label"

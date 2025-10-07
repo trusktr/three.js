@@ -8,7 +8,8 @@ This directory contains WebAssembly tests for the Vector2 class using [Porffor](
 - `rollup.config.js` - Rollup configuration that bundles the test file with Vector2 for Porffor compilation
 - `Vector2.test.bundle.js` - Bundled test file (generated, not committed)
 - `Vector2.test.wasm` - Compiled WebAssembly binary (generated, not committed)
-- `run-wasm.js` - Node.js runner for WebAssembly modules (experimental, not currently used)
+- `run-wasm.js` - Node.js wrapper script to run the bundled tests with Porffor
+- `../examples/misc_wasm_vector2_tests.html` - Browser-based example showing WebAssembly compilation and execution
 
 ## Running Tests
 
@@ -21,7 +22,14 @@ This will:
 1. Bundle the test file with Vector2 using Rollup
 2. Execute the bundled tests using Porffor's runtime
 
-### Option 2: Compile to WebAssembly
+### Option 2: Run via the Node.js wrapper script
+```bash
+npm run run-wasm-vector2
+```
+
+This uses the `test/wasm/run-wasm.js` wrapper script to execute the tests.
+
+### Option 3: Compile to WebAssembly
 ```bash
 npm run compile-wasm-vector2
 ```
@@ -30,7 +38,13 @@ This will:
 1. Bundle the test file with Vector2 using Rollup
 2. Compile the bundle to `Vector2.test.wasm`
 
-Note: Running the compiled WASM directly with Node.js requires Porffor's runtime imports, so it's recommended to use Option 1.
+### Option 4: Run in the browser
+Open `examples/misc_wasm_vector2_tests.html` in a web browser or through the Three.js examples page. This example:
+- Loads the bundled test file
+- Compiles it to WebAssembly using Porffor in the browser
+- Displays the test results in real-time
+
+Note: Running the compiled WASM directly with Node.js requires Porffor's runtime imports, so it's recommended to use one of the above options.
 
 ## Test Coverage
 
