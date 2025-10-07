@@ -101,7 +101,12 @@ class Vector2 {
 	 * @param {number} y - The value of the y component.
 	 * @return {Vector2} A reference to this vector.
 	 */
-	set( x, y ) {
+	// Porffor compatibility: The method name 'set' conflicts with JavaScript's
+	// built-in setter mechanism in Porffor's implementation, causing runtime errors.
+	// Renamed to 'setXY' to work with Porffor WebAssembly compilation.
+	// Original code (commented out):
+	// set( x, y ) {
+	setXY( x, y ) {
 
 		this.x = x;
 		this.y = y;
@@ -448,8 +453,12 @@ class Vector2 {
 
 		// assumes min < max, componentwise
 
-		this.x = clamp( this.x, min.x, max.x );
-		this.y = clamp( this.y, min.y, max.y );
+		// Porffor compatibility: Inline clamp() function calls.
+		// Original code (commented out):
+		// this.x = clamp( this.x, min.x, max.x );
+		// this.y = clamp( this.y, min.y, max.y );
+		this.x = Math.max( min.x, Math.min( max.x, this.x ) );
+		this.y = Math.max( min.y, Math.min( max.y, this.y ) );
 
 		return this;
 
@@ -467,8 +476,13 @@ class Vector2 {
 	 */
 	clampScalar( minVal, maxVal ) {
 
-		this.x = clamp( this.x, minVal, maxVal );
-		this.y = clamp( this.y, minVal, maxVal );
+		// Porffor compatibility: Inline clamp() function calls because Porffor has
+		// issues with function references. Using Math.max/Math.min directly.
+		// Original code (commented out):
+		// this.x = clamp( this.x, minVal, maxVal );
+		// this.y = clamp( this.y, minVal, maxVal );
+		this.x = Math.max( minVal, Math.min( maxVal, this.x ) );
+		this.y = Math.max( minVal, Math.min( maxVal, this.y ) );
 
 		return this;
 
@@ -488,7 +502,10 @@ class Vector2 {
 
 		const length = this.length();
 
-		return this.divideScalar( length || 1 ).multiplyScalar( clamp( length, min, max ) );
+		// Porffor compatibility: Inline clamp() function call.
+		// Original code (commented out):
+		// return this.divideScalar( length || 1 ).multiplyScalar( clamp( length, min, max ) );
+		return this.divideScalar( length || 1 ).multiplyScalar( Math.max( min, Math.min( max, length ) ) );
 
 	}
 
@@ -662,8 +679,10 @@ class Vector2 {
 		const theta = this.dot( v ) / denominator;
 
 		// clamp, to handle numerical problems
-
-		return Math.acos( clamp( theta, - 1, 1 ) );
+		// Porffor compatibility: Inline clamp() function call.
+		// Original code (commented out):
+		// return Math.acos( clamp( theta, - 1, 1 ) );
+		return Math.acos( Math.max( - 1, Math.min( 1, theta ) ) );
 
 	}
 

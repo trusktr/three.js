@@ -52,19 +52,19 @@ The test file includes 41 tests covering:
 
 The test file uses ES module imports to import the Vector2 class from `src/math/Vector2.js`. Since Porffor doesn't support ES module imports at runtime, we use Rollup to bundle the test file with all its dependencies into a single file before compilation.
 
-### Porffor Compatibility
+### Porffor Compatibility Modifications
 
-A custom Rollup plugin (`porfforCompat`) handles compatibility issues with Porffor:
+To make Vector2 compatible with Porffor WebAssembly compilation, the following changes were made directly in `src/math/Vector2.js`:
 
-1. **Method name 'set' conflict**: Porffor has issues with the method name `set` as it conflicts with JavaScript's setter syntax. The plugin renames `set( x, y )` to `setXY( x, y )` in the bundled code.
+1. **Method name 'set' renamed to 'setXY'**: Porffor has issues with the method name `set` as it conflicts with JavaScript's setter syntax. The original code is commented out in the file with an explanation.
    - Original: `set( x, y ) {`
    - Modified: `setXY( x, y ) {`
 
-2. **Inline clamp() calls**: Porffor has issues calling the `clamp()` helper function. The plugin inlines these calls directly.
+2. **Inlined clamp() function calls**: Porffor has issues calling the `clamp()` helper function from MathUtils.js. These calls have been inlined using `Math.max()` and `Math.min()` directly. The original code is commented out in each location with an explanation.
    - Original: `this.x = clamp( this.x, minVal, maxVal )`
    - Modified: `this.x = Math.max( minVal, Math.min( maxVal, this.x ) )`
 
-**Important:** The original `src/math/Vector2.js` file is **not modified**. All transformations are applied during the bundling process by the Rollup plugin.
+These modifications are present in the source file with clear comments indicating the original code and the reason for the change. This keeps both JavaScript and WebAssembly usage consistent - both use the same method names and implementation.
 
 ## Why WebAssembly?
 
