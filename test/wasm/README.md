@@ -4,25 +4,31 @@ This directory contains WebAssembly tests for the Vector2 class using [Porffor](
 
 ## Files
 
-- `Vector2.test.js` - Test file containing the Vector2 class and test cases
+- `Vector2.test.js` - Test file that imports the Vector2 class and tests its features
+- `rollup.config.js` - Rollup configuration that bundles the test file with Vector2 for Porffor compilation
+- `Vector2.test.bundle.js` - Bundled test file (generated, not committed)
 - `Vector2.test.wasm` - Compiled WebAssembly binary (generated, not committed)
 - `run-wasm.js` - Node.js runner for WebAssembly modules (experimental, not currently used)
 
 ## Running Tests
 
-### Option 1: Run tests directly with Porffor (recommended)
+### Option 1: Run tests with Porffor (recommended)
 ```bash
 npm run test-wasm-vector2
 ```
 
-This will execute the Vector2 tests using Porffor's runtime.
+This will:
+1. Bundle the test file with Vector2 using Rollup
+2. Execute the bundled tests using Porffor's runtime
 
-### Option 2: Compile to WebAssembly and run
+### Option 2: Compile to WebAssembly
 ```bash
 npm run compile-wasm-vector2
 ```
 
-This compiles `Vector2.test.js` to `Vector2.test.wasm`.
+This will:
+1. Bundle the test file with Vector2 using Rollup
+2. Compile the bundle to `Vector2.test.wasm`
 
 Note: Running the compiled WASM directly with Node.js requires Porffor's runtime imports, so it's recommended to use Option 1.
 
@@ -30,7 +36,7 @@ Note: Running the compiled WASM directly with Node.js requires Porffor's runtime
 
 The test file includes 41 tests covering:
 - Constructor and initialization
-- Setter methods (setXY, setScalar, setX, setY)
+- Setter methods (set/setXY, setScalar, setX, setY)
 - Component access (getComponent, setComponent)
 - Cloning
 - Scalar arithmetic operations (addScalar, subScalar, multiplyScalar, divideScalar)
@@ -42,16 +48,23 @@ The test file includes 41 tests covering:
 
 ## Implementation Notes
 
+### Rollup Bundling
+
+The test file uses ES module imports to import the Vector2 class from `src/math/Vector2.js`. Since Porffor doesn't support ES module imports at runtime, we use Rollup to bundle the test file with all its dependencies into a single file before compilation.
+
 ### Porffor Compatibility
 
-The Vector2 class is inlined in the test file because Porffor doesn't currently support ES module imports at runtime.
+A custom Rollup plugin (`porfforCompat`) handles compatibility issues with Porffor:
 
-Some modifications were made to ensure Porffor compatibility:
-- The `set()` method was renamed to `setXY()` to avoid conflicts with JavaScript's built-in setter syntax
-- Methods that accept Vector2 objects as parameters (like `add()`, `copy()`, `equals()`, etc.) are not tested due to current Porffor limitations with complex type passing
-- The `clamp()` helper function calls were inlined to avoid function reference issues
+1. **Method name 'set' conflict**: Porffor has issues with the method name `set` as it conflicts with JavaScript's setter syntax. The plugin renames `set( x, y )` to `setXY( x, y )` in the bundled code.
+   - Original: `set( x, y ) {`
+   - Modified: `setXY( x, y ) {`
 
-These limitations are specific to the current version of Porffor and don't affect the original Vector2.js implementation.
+2. **Inline clamp() calls**: Porffor has issues calling the `clamp()` helper function. The plugin inlines these calls directly.
+   - Original: `this.x = clamp( this.x, minVal, maxVal )`
+   - Modified: `this.x = Math.max( minVal, Math.min( maxVal, this.x ) )`
+
+**Important:** The original `src/math/Vector2.js` file is **not modified**. All transformations are applied during the bundling process by the Rollup plugin.
 
 ## Why WebAssembly?
 
