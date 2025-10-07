@@ -237,7 +237,7 @@ class LensflareMesh extends Mesh {
 
 			const size = 16 / viewport.w;
 
-			sharedValues.scale.set( size * invAspect, size );
+			sharedValues.scale.setXY( size * invAspect, size );
 
 			validArea.min.set( viewport.x, viewport.y );
 			validArea.max.set( viewport.x + ( viewport.z - 16 ), viewport.y + ( viewport.w - 16 ) );
@@ -302,7 +302,7 @@ class LensflareMesh extends Mesh {
 
 					const size = element.size / viewport.w;
 
-					material2.scale.set( size * invAspect, size );
+					material2.scale.setXY( size * invAspect, size );
 
 					renderer.renderObject( mesh2, scene, camera, geometry, material2, null, lightsNode );
 

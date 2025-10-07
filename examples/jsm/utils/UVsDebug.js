@@ -99,7 +99,7 @@ function UVsDebug( geometry, size = 1024 ) {
 
 		ctx.beginPath();
 
-		a.set( 0, 0 );
+		a.setXY( 0, 0 );
 
 		for ( let j = 0, jl = uvs.length; j < jl; j ++ ) {
 

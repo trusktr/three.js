@@ -234,7 +234,7 @@ class Lensflare extends Mesh {
 			const halfViewportHeight = viewport.w / 2.0;
 
 			let size = 16 / viewport.w;
-			scale.set( size * invAspect, size );
+			scale.setXY( size * invAspect, size );
 
 			validArea.min.set( viewport.x, viewport.y );
 			validArea.max.set( viewport.x + ( viewport.z - 16 ), viewport.y + ( viewport.w - 16 ) );
