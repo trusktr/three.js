@@ -49,6 +49,8 @@
     "build-module": "rollup -c utils/build/rollup.config.js --configOnlyModule",
     "build-docs": "jsdoc -c utils/docs/jsdoc.config.json",
     "compile:wasm": "porforr src/math/Vector2.js build/Vector2.wasm",
+    "compile:wasm-test": "node utils/porforr/cli.js test/vector2-test.js build/vector2-test.wasm",
+    "test:wasm": "npm run compile:wasm-test && node test/run-compiled-vector2-test.js",
     "dev": "node utils/build/dev.js && servez -p 8080",
     "dev-ssl": "node utils/build/dev.js && servez -p 8080 --ssl",
     "preview": "concurrently --names \"ROLLUP,HTTP\" -c \"bgBlue.bold,bgGreen.bold\" \"rollup -c utils/build/rollup.config.js -w -m inline\" \"servez -p 8080\"",

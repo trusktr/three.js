@@ -37,6 +37,30 @@ This will:
    - `Vector2.wasm` - WebAssembly binary
    - `Vector2.wasm.js` - JavaScript wrapper for loading the WASM module
 
+## Testing Vector2 with Porforr
+
+A comprehensive test file has been created that imports and tests the Vector2 class:
+
+```bash
+# Compile and run the Vector2 test with Porforr
+npm run test:wasm
+
+# Or run just the test (without compilation)
+node test/vector2-test.js
+```
+
+The test file (`test/vector2-test.js`) tests all major Vector2 methods including:
+- Constructor
+- Vector addition
+- Vector length calculation
+- Dot product
+- Normalization
+- Distance calculation
+- Clone
+- Scalar multiplication
+
+See [`test/README-vector2-wasm-test.md`](../test/README-vector2-wasm-test.md) for detailed information.
+
 ### Using Porforr CLI directly
 
 You can also use the Porforr CLI directly:
