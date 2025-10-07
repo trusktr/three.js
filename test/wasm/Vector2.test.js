@@ -1,6 +1,14 @@
 // Simple tests for Vector2 class (compiled to WebAssembly with Porffor)
 // This file does not use any test framework to keep it simple for Porffor compilation
 // Vector2 class is inlined here because Porffor doesn't support ES module imports
+//
+// To run these tests:
+//   npm run test-wasm-vector2          (runs tests with Porffor)
+//   npm run compile-wasm-vector2       (compiles to .wasm file)
+//
+// Note: Some Vector2 methods that accept Vector2 objects as parameters are not tested
+// due to current Porffor limitations with complex type passing. The original Vector2.js
+// is not modified - these limitations only affect the test file.
 
 // Helper function from MathUtils.js
 function clamp( value, min, max ) {
