@@ -1,0 +1,13 @@
+{
+  "name": "porforr",
+  "version": "1.0.0",
+  "description": "A simple JavaScript to WebAssembly compiler tool",
+  "type": "module",
+  "main": "index.js",
+  "bin": {
+    "porforr": "./cli.js"
+  },
+  "keywords": ["wasm", "webassembly", "compiler"],
+  "author": "",
+  "license": "MIT"
+}
