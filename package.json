@@ -69,7 +69,9 @@
     "test-e2e-cov": "node test/e2e/check-coverage.js",
     "test-e2e-webgpu": "node test/e2e/puppeteer.js --webgpu",
     "test-treeshake": "rollup -c test/rollup.treeshake.config.js",
-    "make-screenshot": "node test/e2e/puppeteer.js --make"
+    "make-screenshot": "node test/e2e/puppeteer.js --make",
+    "test-wasm-vector2": "npx porffor test/wasm/Vector2.test.js",
+    "compile-wasm-vector2": "npx porffor wasm test/wasm/Vector2.test.js test/wasm/Vector2.test.wasm"
   },
   "keywords": [
     "three",
@@ -106,6 +108,7 @@
     "jsdoc": "^4.0.4",
     "magic-string": "^0.30.0",
     "pixelmatch": "^7.0.0",
+    "porffor": "^0.60.22",
     "puppeteer": "^22.0.0",
     "qunit": "^2.19.4",
     "rollup": "^4.6.0",
