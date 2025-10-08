@@ -159,7 +159,7 @@ class Box2 {
 	 */
 	getCenter( target ) {
 
-		return this.isEmpty() ? target.set( 0, 0 ) : target.addVectors( this.min, this.max ).multiplyScalar( 0.5 );
+		return this.isEmpty() ? target.setXY( 0, 0 ) : target.addVectors( this.min, this.max ).multiplyScalar( 0.5 );
 
 	}
 
@@ -171,7 +171,7 @@ class Box2 {
 	 */
 	getSize( target ) {
 
-		return this.isEmpty() ? target.set( 0, 0 ) : target.subVectors( this.max, this.min );
+		return this.isEmpty() ? target.setXY( 0, 0 ) : target.subVectors( this.max, this.min );
 
 	}
 
@@ -263,7 +263,7 @@ class Box2 {
 		// This can potentially have a divide by zero if the box
 		// has a size dimension of 0.
 
-		return target.set(
+		return target.setXY(
 			( point.x - this.min.x ) / ( this.max.x - this.min.x ),
 			( point.y - this.min.y ) / ( this.max.y - this.min.y )
 		);
