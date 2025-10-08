@@ -154,7 +154,7 @@ class GTAOPass extends Pass {
 		} );
 		this.gtaoMaterial.defines.PERSPECTIVE_CAMERA = this.camera.isPerspectiveCamera ? 1 : 0;
 		this.gtaoMaterial.uniforms.tNoise.value = this.gtaoNoiseTexture;
-		this.gtaoMaterial.uniforms.resolution.value.set( this.width, this.height );
+		this.gtaoMaterial.uniforms.resolution.value.setXY( this.width, this.height );
 		this.gtaoMaterial.uniforms.cameraNear.value = this.camera.near;
 		this.gtaoMaterial.uniforms.cameraFar.value = this.camera.far;
 
@@ -171,7 +171,7 @@ class GTAOPass extends Pass {
 		} );
 		this.pdMaterial.uniforms.tDiffuse.value = this.gtaoRenderTarget.texture;
 		this.pdMaterial.uniforms.tNoise.value = this.pdNoiseTexture;
-		this.pdMaterial.uniforms.resolution.value.set( this.width, this.height );
+		this.pdMaterial.uniforms.resolution.value.setXY( this.width, this.height );
 		this.pdMaterial.uniforms.lumaPhi.value = 10;
 		this.pdMaterial.uniforms.depthPhi.value = 2;
 		this.pdMaterial.uniforms.normalPhi.value = 3;
@@ -253,11 +253,11 @@ class GTAOPass extends Pass {
 		this.normalRenderTarget.setSize( width, height );
 		this.pdRenderTarget.setSize( width, height );
 
-		this.gtaoMaterial.uniforms.resolution.value.set( width, height );
+		this.gtaoMaterial.uniforms.resolution.value.setXY( width, height );
 		this.gtaoMaterial.uniforms.cameraProjectionMatrix.value.copy( this.camera.projectionMatrix );
 		this.gtaoMaterial.uniforms.cameraProjectionMatrixInverse.value.copy( this.camera.projectionMatrixInverse );
 
-		this.pdMaterial.uniforms.resolution.value.set( width, height );
+		this.pdMaterial.uniforms.resolution.value.setXY( width, height );
 		this.pdMaterial.uniforms.cameraProjectionMatrixInverse.value.copy( this.camera.projectionMatrixInverse );
 
 	}

@@ -31,7 +31,7 @@ class FXAAPass extends ShaderPass {
 	 */
 	setSize( width, height ) {
 
-		this.material.uniforms[ 'resolution' ].value.set( 1 / width, 1 / height );
+		this.material.uniforms[ 'resolution' ].value.setXY( 1 / width, 1 / height );
 
 	}
 

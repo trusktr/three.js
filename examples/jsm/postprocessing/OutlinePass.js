@@ -193,10 +193,10 @@ class OutlinePass extends Pass {
 		const MAX_EDGE_GLOW = 4;
 
 		this.separableBlurMaterial1 = this._getSeparableBlurMaterial( MAX_EDGE_THICKNESS );
-		this.separableBlurMaterial1.uniforms[ 'texSize' ].value.set( resx, resy );
+		this.separableBlurMaterial1.uniforms[ 'texSize' ].value.setXY( resx, resy );
 		this.separableBlurMaterial1.uniforms[ 'kernelRadius' ].value = 1;
 		this.separableBlurMaterial2 = this._getSeparableBlurMaterial( MAX_EDGE_GLOW );
-		this.separableBlurMaterial2.uniforms[ 'texSize' ].value.set( Math.round( resx / 2 ), Math.round( resy / 2 ) );
+		this.separableBlurMaterial2.uniforms[ 'texSize' ].value.setXY( Math.round( resx / 2 ), Math.round( resy / 2 ) );
 		this.separableBlurMaterial2.uniforms[ 'kernelRadius' ].value = MAX_EDGE_GLOW;
 
 		// Overlay material
@@ -281,7 +281,7 @@ class OutlinePass extends Pass {
 		this.renderTargetMaskDownSampleBuffer.setSize( resx, resy );
 		this.renderTargetBlurBuffer1.setSize( resx, resy );
 		this.renderTargetEdgeBuffer1.setSize( resx, resy );
-		this.separableBlurMaterial1.uniforms[ 'texSize' ].value.set( resx, resy );
+		this.separableBlurMaterial1.uniforms[ 'texSize' ].value.setXY( resx, resy );
 
 		resx = Math.round( resx / 2 );
 		resy = Math.round( resy / 2 );
@@ -289,7 +289,7 @@ class OutlinePass extends Pass {
 		this.renderTargetBlurBuffer2.setSize( resx, resy );
 		this.renderTargetEdgeBuffer2.setSize( resx, resy );
 
-		this.separableBlurMaterial2.uniforms[ 'texSize' ].value.set( resx, resy );
+		this.separableBlurMaterial2.uniforms[ 'texSize' ].value.setXY( resx, resy );
 
 	}
 
@@ -377,7 +377,7 @@ class OutlinePass extends Pass {
 			// 3. Apply Edge Detection Pass
 			this._fsQuad.material = this.edgeDetectionMaterial;
 			this.edgeDetectionMaterial.uniforms[ 'maskTexture' ].value = this.renderTargetMaskDownSampleBuffer.texture;
-			this.edgeDetectionMaterial.uniforms[ 'texSize' ].value.set( this.renderTargetMaskDownSampleBuffer.width, this.renderTargetMaskDownSampleBuffer.height );
+			this.edgeDetectionMaterial.uniforms[ 'texSize' ].value.setXY( this.renderTargetMaskDownSampleBuffer.width, this.renderTargetMaskDownSampleBuffer.height );
 			this.edgeDetectionMaterial.uniforms[ 'visibleEdgeColor' ].value = this.tempPulseColor1;
 			this.edgeDetectionMaterial.uniforms[ 'hiddenEdgeColor' ].value = this.tempPulseColor2;
 			renderer.setRenderTarget( this.renderTargetEdgeBuffer1 );

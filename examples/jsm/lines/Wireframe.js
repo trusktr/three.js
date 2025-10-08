@@ -97,7 +97,7 @@ class Wireframe extends Mesh {
 		if ( uniforms && uniforms.resolution ) {
 
 			renderer.getViewport( _viewport );
-			this.material.uniforms.resolution.value.set( _viewport.z, _viewport.w );
+			this.material.uniforms.resolution.value.setXY( _viewport.z, _viewport.w );
 
 		}
 

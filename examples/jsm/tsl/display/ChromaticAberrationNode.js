@@ -93,7 +93,7 @@ class ChromaticAberrationNode extends TempNode {
 	updateBefore( /* frame */ ) {
 
 		const map = this.textureNode.value;
-		this._invSize.value.set( 1 / map.image.width, 1 / map.image.height );
+		this._invSize.value.setXY( 1 / map.image.width, 1 / map.image.height );
 
 	}
 

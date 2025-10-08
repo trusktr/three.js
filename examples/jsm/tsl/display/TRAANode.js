@@ -214,7 +214,7 @@ class TRAANode extends TempNode {
 		this._historyRenderTarget.setSize( width, height );
 		this._resolveRenderTarget.setSize( width, height );
 
-		this._invSize.value.set( 1 / width, 1 / height );
+		this._invSize.value.setXY( 1 / width, 1 / height );
 
 	}
 

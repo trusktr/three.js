@@ -80,7 +80,7 @@ class DotScreenPass extends Pass {
 	render( renderer, writeBuffer, readBuffer /*, deltaTime, maskActive */ ) {
 
 		this.uniforms[ 'tDiffuse' ].value = readBuffer.texture;
-		this.uniforms[ 'tSize' ].value.set( readBuffer.width, readBuffer.height );
+		this.uniforms[ 'tSize' ].value.setXY( readBuffer.width, readBuffer.height );
 
 		if ( this.renderToScreen ) {
 

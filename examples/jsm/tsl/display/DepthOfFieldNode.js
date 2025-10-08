@@ -233,7 +233,7 @@ class DepthOfFieldNode extends TempNode {
 	 */
 	setSize( width, height ) {
 
-		this._invSize.value.set( 1 / width, 1 / height );
+		this._invSize.value.setXY( 1 / width, 1 / height );
 
 		this._CoCRT.setSize( width, height );
 		this._compositeRT.setSize( width, height );
