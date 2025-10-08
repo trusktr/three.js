@@ -720,7 +720,7 @@ class PassNode extends TempNode {
 
 			renderer.xr.updateCamera( camera );
 
-			_size.set( outputRenderTarget.width, outputRenderTarget.height );
+			_size.setXY( outputRenderTarget.width, outputRenderTarget.height );
 
 		} else {
 
