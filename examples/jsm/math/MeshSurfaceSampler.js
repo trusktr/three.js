@@ -302,7 +302,7 @@ class MeshSurfaceSampler {
 			_uva.fromBufferAttribute( this.uvAttribute, i0 );
 			_uvb.fromBufferAttribute( this.uvAttribute, i1 );
 			_uvc.fromBufferAttribute( this.uvAttribute, i2 );
-			targetUV.set( 0, 0 ).addScaledVector( _uva, u ).addScaledVector( _uvb, v ).addScaledVector( _uvc, 1 - ( u + v ) );
+			targetUV.setXY( 0, 0 ).addScaledVector( _uva, u ).addScaledVector( _uvb, v ).addScaledVector( _uvc, 1 - ( u + v ) );
 
 		}
 
