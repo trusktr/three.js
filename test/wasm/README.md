@@ -48,17 +48,57 @@ Note: Running the compiled WASM directly with Node.js requires Porffor's runtime
 
 ## Test Coverage
 
-The test file includes 41 tests covering:
-- Constructor and initialization
-- Setter methods (set/setXY, setScalar, setX, setY)
-- Component access (getComponent, setComponent)
-- Cloning
-- Scalar arithmetic operations (addScalar, subScalar, multiplyScalar, divideScalar)
-- Negation
-- Length calculations (length, lengthSq, manhattanLength)
-- Normalization
-- Rounding operations (floor, ceil, round)
-- Clamping (clampScalar)
+The test file includes **99 comprehensive tests** covering:
+
+### Basic Operations (19 tests)
+- Constructor and initialization (default and with parameters)
+- Setter methods: setXY, setScalar, setX, setY
+- Component access: getComponent, setComponent
+- Width/height property setters
+- Clone and independence
+
+### Scalar Arithmetic (24 tests)
+- addScalar (with positive and negative values)
+- subScalar (with positive and negative values)
+- multiplyScalar (including zero and edge cases)
+- divideScalar (including edge cases)
+- Chained operations
+
+### Vector Properties (9 tests)
+- length, lengthSq, manhattanLength
+- normalize (including zero vector edge case)
+- setLength (including zero vector edge case)
+- angle calculation
+- isVector2 flag
+
+### Rounding Operations (12 tests)
+- floor (positive and negative)
+- ceil (positive and negative)
+- round (including .5 values with banker's rounding)
+- roundToZero (positive and negative)
+
+### Clamping (8 tests)
+- clampScalar (min, max, and in-range)
+- clampLength (min and max)
+
+### Array Operations (8 tests)
+- fromArray (with and without offset)
+- toArray (with and without offset)
+
+### Advanced Operations (8 tests)
+- negate
+- abs (via Math.abs)
+- min/max scalars
+- random
+
+### Edge Cases (11 tests)
+- Large number handling
+- Small number handling
+- Zero vector operations
+- Negative value operations
+- Multiple setXY calls
+
+**Note:** Methods that accept Vector2 objects as parameters (like `add()`, `copy()`, `equals()`, etc.) are not tested due to current Porffor limitations with complex type passing.
 
 ## Implementation Notes
 
