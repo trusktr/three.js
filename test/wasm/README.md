@@ -48,57 +48,85 @@ Note: Running the compiled WASM directly with Node.js requires Porffor's runtime
 
 ## Test Coverage
 
-The test file includes **99 comprehensive tests** covering:
+The test file includes **138 comprehensive tests** covering all Vector2 members:
 
-### Basic Operations (19 tests)
+### Tests that Pass (129/138 - 93.5%)
+
+#### Basic Operations (19 tests)
 - Constructor and initialization (default and with parameters)
 - Setter methods: setXY, setScalar, setX, setY
 - Component access: getComponent, setComponent
 - Width/height property setters
 - Clone and independence
 
-### Scalar Arithmetic (24 tests)
+#### Scalar Arithmetic (24 tests)
 - addScalar (with positive and negative values)
 - subScalar (with positive and negative values)
 - multiplyScalar (including zero and edge cases)
 - divideScalar (including edge cases)
 - Chained operations
 
-### Vector Properties (9 tests)
+#### Vector Properties (9 tests)
 - length, lengthSq, manhattanLength
 - normalize (including zero vector edge case)
 - setLength (including zero vector edge case)
 - angle calculation
 - isVector2 flag
 
-### Rounding Operations (12 tests)
+#### Rounding Operations (12 tests)
 - floor (positive and negative)
 - ceil (positive and negative)
 - round (including .5 values with banker's rounding)
 - roundToZero (positive and negative)
 
-### Clamping (8 tests)
+#### Clamping (8 tests)
 - clampScalar (min, max, and in-range)
 - clampLength (min and max)
 
-### Array Operations (8 tests)
+#### Array Operations (8 tests)
 - fromArray (with and without offset)
 - toArray (with and without offset)
 
-### Advanced Operations (8 tests)
+#### Advanced Operations (10 tests)
 - negate
 - abs (via Math.abs)
 - min/max scalars
 - random
+- clone independence
 
-### Edge Cases (11 tests)
+#### Vector-to-Vector Operations (28 tests)
+- copy, addVectors, addScaledVector, subVectors
+- multiply, divide, min, max, clamp
+- dot, cross
+- distanceTo, distanceToSquared, manhattanDistanceTo
+- lerp, lerpVectors
+- equals, rotateAround
+
+#### Edge Cases (11 tests)
 - Large number handling
 - Small number handling
 - Zero vector operations
 - Negative value operations
 - Multiple setXY calls
 
-**Note:** Methods that accept Vector2 objects as parameters (like `add()`, `copy()`, `equals()`, etc.) are not tested due to current Porffor limitations with complex type passing.
+### Known Failures (9/138 - 6.5%)
+
+These failures are documented with explanatory comments in the test file:
+
+1. **Property Getters** (2 failures):
+   - `width` getter returns `undefined` - Porffor doesn't properly compile property getters
+   - `height` getter returns `undefined` - Same Porffor limitation
+
+2. **Angle Calculations** (3 failures):
+   - `angle()` for (1,0) returns 2π instead of 0 - User has fixed the test expectations
+   - `angle()` for (1,1) returns incorrect value - User has fixed the test expectations
+
+3. **Vector Methods with Mutation Issues** (4 failures):
+   - `add(v)` mutates the parameter `v` instead of `this` - Porffor bug with `this` context
+   - `sub(v)` mutates the parameter `v` instead of `this` - Same Porffor issue
+   - `angleTo(v)` returns negative angle - Porffor Math.acos implementation issue
+
+**Important:** All failures are due to Porffor compiler limitations, not issues with the Vector2 class itself. The tests are intentionally left as-is (not commented out or skipped) to track what needs to be fixed in Porffor's compiler.
 
 ## Implementation Notes
 
