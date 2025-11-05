@@ -192,9 +192,9 @@ assertEquals(v51.y, 88, 'setComponent(1) should set y');
 // Test 20: width and height properties (setters only, getters not supported in Porffor)
 console.log('\n--- Width/Height Property Tests ---');
 const v52 = new Vector2(11, 22);
-// Note: Property getters don't work in Porffor, skip getter tests
-// assertEquals(v52.width, 11, 'width property should return x');
-// assertEquals(v52.height, 22, 'height property should return y');
+// Note: Property getters don't work in Porffor yet
+assertEquals(v52.width, 11, 'width property should return x');
+assertEquals(v52.height, 22, 'height property should return y');
 v52.width = 33;
 v52.height = 44;
 assertEquals(v52.x, 33, 'width setter should set x');
@@ -219,14 +219,13 @@ assertClose(v54.y, 8, 0.0001, 'setLength() should scale y proportionally');
 console.log('\n--- Angle Tests ---');
 const v55 = new Vector2(1, 0);
 const angle1 = v55.angle();
-// angle() for (1,0) returns PI due to atan2(-0, -1) + PI = 0 + PI = PI
-// But Porffor calculates it as 2*PI (0 + PI wraps to 2*PI)
-// Actually the implementation is: atan2(-y, -x) + PI, so for (1,0): atan2(0, -1) + PI = PI + PI = 2*PI
-assertClose(angle1, 2 * Math.PI, 0.0001, 'angle() for (1,0) should be 2*PI');
+assertClose(angle1, 0, 0.0001, 'angle() for (1,0) should be 0');
 const v56 = new Vector2(0, 1);
 const angle2 = v56.angle();
-// For (0,1): atan2(-1, -0) + PI = -PI/2 + PI = PI/2
 assertClose(angle2, Math.PI / 2, 0.0001, 'angle() for (0,1) should be PI/2');
+v56.setXY(1, 1)
+const angle3 = v56.angle();
+assertClose(angle2, Math.PI / 4, 0.0001, 'angle() for (1,1) should be PI/4');
 
 // Test 24: abs (via Math.abs)
 console.log('\n--- Abs Tests ---');
