@@ -194,8 +194,8 @@ console.log('\n--- Width/Height Property Tests ---');
 const v52 = new Vector2(11, 22);
 // Note: Property getters return undefined in Porffor - this is a known limitation
 // The getters are defined but Porffor doesn't properly compile them
-assertEquals(v52.width, 11, 'width property should return x (FAILS: Porffor getter issue)');
-assertEquals(v52.height, 22, 'height property should return y (FAILS: Porffor getter issue)');
+assertEquals(v52.width, 11, 'width property should return x');
+assertEquals(v52.height, 22, 'height property should return y');
 v52.width = 33;
 v52.height = 44;
 assertEquals(v52.x, 33, 'width setter should set x');
@@ -220,13 +220,15 @@ assertClose(v54.y, 8, 0.0001, 'setLength() should scale y proportionally');
 console.log('\n--- Angle Tests ---');
 const v55 = new Vector2(1, 0);
 const angle1 = v55.angle();
+// The result of `Math.atan2( - 0, - 1 ) + Math.PI` is 0 in JS but 2*PI in Porffor.
 assertClose(angle1, 0, 0.0001, 'angle() for (1,0) should be 0');
 const v56 = new Vector2(0, 1);
 const angle2 = v56.angle();
 assertClose(angle2, Math.PI / 2, 0.0001, 'angle() for (0,1) should be PI/2');
-v56.setXY(1, 1)
-const angle3 = v56.angle();
-assertClose(angle2, Math.PI / 4, 0.0001, 'angle() for (1,1) should be PI/4');
+const v56b = new Vector2(1, 1);
+const angle3 = v56b.angle();
+// The result of `Math.atan2( - 1, - 1 ) + Math.PI` is PI/4 in JS but PI/3.67 in Porffor.
+assertClose(angle3, /*Math.PI / 4*/ 0.785398163397, 0.0001, 'angle() for (1,1) should be PI/4');
 
 // Test 24: abs (via Math.abs)
 console.log('\n--- Abs Tests ---');
@@ -403,262 +405,162 @@ assertEquals(v81.y, 40, 'clone y should be modified');
 console.log('\n--- Copy Tests (Vector2 parameter) ---');
 const v82 = new Vector2(1, 2);
 const v83 = new Vector2(3, 4);
-try {
-	v82.copy(v83);
-	assertEquals(v82.x, 3, 'copy() should copy x from source vector');
-	assertEquals(v82.y, 4, 'copy() should copy y from source vector');
-} catch (e) {
-	testsFailed += 2;
-	console.log('✗ copy() tests failed - Porffor may not support Vector2 object parameters yet');
-}
+v82.copy(v83);
+assertEquals(v82.x, 3, 'copy() should copy x from source vector');
+assertEquals(v82.y, 4, 'copy() should copy y from source vector');
 
 // Test 47: add (requires Vector2 parameter - may fail with Porffor)
 console.log('\n--- Add Tests (Vector2 parameter) ---');
 const v84 = new Vector2(1, 2);
 const v85 = new Vector2(3, 4);
-try {
-	v84.add(v85);
-	assertEquals(v84.x, 4, 'add() should add x values (FAILS: mutates v85 instead of v84 - Porffor bug)');
-	assertEquals(v84.y, 6, 'add() should add y values (FAILS: mutates v85 instead of v84 - Porffor bug)');
-} catch (e) {
-	testsFailed += 2;
-	console.log('✗ add() tests failed - Porffor may not support Vector2 object parameters yet');
-}
+v84.add(v85);
+assertEquals(v84.x, 4, 'add() should add x values');
+assertEquals(v84.y, 6, 'add() should add y values');
 
 // Test 48: addVectors (requires 2 Vector2 parameters - may fail with Porffor)
 console.log('\n--- AddVectors Tests (Vector2 parameters) ---');
 const v86 = new Vector2();
 const v87 = new Vector2(1, 2);
 const v88 = new Vector2(3, 4);
-try {
-	v86.addVectors(v87, v88);
-	assertEquals(v86.x, 4, 'addVectors() should set x to sum');
-	assertEquals(v86.y, 6, 'addVectors() should set y to sum');
-} catch (e) {
-	testsFailed += 2;
-	console.log('✗ addVectors() tests failed - Porffor may not support Vector2 object parameters yet');
-}
+v86.addVectors(v87, v88);
+assertEquals(v86.x, 4, 'addVectors() should set x to sum');
+assertEquals(v86.y, 6, 'addVectors() should set y to sum');
 
 // Test 49: addScaledVector (requires Vector2 parameter - may fail with Porffor)
 console.log('\n--- AddScaledVector Tests (Vector2 parameter) ---');
 const v89 = new Vector2(1, 2);
 const v90 = new Vector2(3, 4);
-try {
-	v89.addScaledVector(v90, 2);
-	assertEquals(v89.x, 7, 'addScaledVector() should add scaled x');
-	assertEquals(v89.y, 10, 'addScaledVector() should add scaled y');
-} catch (e) {
-	testsFailed += 2;
-	console.log('✗ addScaledVector() tests failed - Porffor may not support Vector2 object parameters yet');
-}
+v89.addScaledVector(v90, 2);
+assertEquals(v89.x, 7, 'addScaledVector() should add scaled x');
+assertEquals(v89.y, 10, 'addScaledVector() should add scaled y');
 
 // Test 50: sub (requires Vector2 parameter - may fail with Porffor)
 console.log('\n--- Sub Tests (Vector2 parameter) ---');
 const v91 = new Vector2(5, 7);
 const v92 = new Vector2(2, 3);
-try {
-	v91.sub(v92);
-	assertEquals(v91.x, 3, 'sub() should subtract x values (FAILS: mutates v92 instead of v91 - Porffor bug)');
-	assertEquals(v91.y, 4, 'sub() should subtract y values (FAILS: mutates v92 instead of v91 - Porffor bug)');
-} catch (e) {
-	testsFailed += 2;
-	console.log('✗ sub() tests failed - Porffor may not support Vector2 object parameters yet');
-}
+v91.sub(v92);
+assertEquals(v91.x, 3, 'sub() should subtract x values');
+assertEquals(v91.y, 4, 'sub() should subtract y values');
 
 // Test 51: subVectors (requires 2 Vector2 parameters - may fail with Porffor)
 console.log('\n--- SubVectors Tests (Vector2 parameters) ---');
 const v93 = new Vector2();
 const v94 = new Vector2(5, 7);
 const v95 = new Vector2(2, 3);
-try {
-	v93.subVectors(v94, v95);
-	assertEquals(v93.x, 3, 'subVectors() should set x to difference');
-	assertEquals(v93.y, 4, 'subVectors() should set y to difference');
-} catch (e) {
-	testsFailed += 2;
-	console.log('✗ subVectors() tests failed - Porffor may not support Vector2 object parameters yet');
-}
+v93.subVectors(v94, v95);
+assertEquals(v93.x, 3, 'subVectors() should set x to difference');
+assertEquals(v93.y, 4, 'subVectors() should set y to difference');
 
 // Test 52: multiply (requires Vector2 parameter - may fail with Porffor)
 console.log('\n--- Multiply Tests (Vector2 parameter) ---');
 const v96 = new Vector2(2, 3);
 const v97 = new Vector2(4, 5);
-try {
-	v96.multiply(v97);
-	assertEquals(v96.x, 8, 'multiply() should multiply x values');
-	assertEquals(v96.y, 15, 'multiply() should multiply y values');
-} catch (e) {
-	testsFailed += 2;
-	console.log('✗ multiply() tests failed - Porffor may not support Vector2 object parameters yet');
-}
+v96.multiply(v97);
+assertEquals(v96.x, 8, 'multiply() should multiply x values');
+assertEquals(v96.y, 15, 'multiply() should multiply y values');
 
 // Test 53: divide (requires Vector2 parameter - may fail with Porffor)
 console.log('\n--- Divide Tests (Vector2 parameter) ---');
 const v98 = new Vector2(8, 15);
 const v99 = new Vector2(2, 3);
-try {
-	v98.divide(v99);
-	assertEquals(v98.x, 4, 'divide() should divide x values');
-	assertEquals(v98.y, 5, 'divide() should divide y values');
-} catch (e) {
-	testsFailed += 2;
-	console.log('✗ divide() tests failed - Porffor may not support Vector2 object parameters yet');
-}
+v98.divide(v99);
+assertEquals(v98.x, 4, 'divide() should divide x values');
+assertEquals(v98.y, 5, 'divide() should divide y values');
 
 // Test 54: min (requires Vector2 parameter - may fail with Porffor)
 console.log('\n--- Min Tests (Vector2 parameter) ---');
 const v100 = new Vector2(5, 10);
 const v101 = new Vector2(3, 15);
-try {
-	v100.min(v101);
-	assertEquals(v100.x, 3, 'min() should take minimum x');
-	assertEquals(v100.y, 10, 'min() should take minimum y');
-} catch (e) {
-	testsFailed += 2;
-	console.log('✗ min() tests failed - Porffor may not support Vector2 object parameters yet');
-}
+v100.min(v101);
+assertEquals(v100.x, 3, 'min() should take minimum x');
+assertEquals(v100.y, 10, 'min() should take minimum y');
 
 // Test 55: max (requires Vector2 parameter - may fail with Porffor)
 console.log('\n--- Max Tests (Vector2 parameter) ---');
 const v102 = new Vector2(5, 10);
 const v103 = new Vector2(3, 15);
-try {
-	v102.max(v103);
-	assertEquals(v102.x, 5, 'max() should take maximum x');
-	assertEquals(v102.y, 15, 'max() should take maximum y');
-} catch (e) {
-	testsFailed += 2;
-	console.log('✗ max() tests failed - Porffor may not support Vector2 object parameters yet');
-}
+v102.max(v103);
+assertEquals(v102.x, 5, 'max() should take maximum x');
+assertEquals(v102.y, 15, 'max() should take maximum y');
 
 // Test 56: clamp (requires 2 Vector2 parameters - may fail with Porffor)
 console.log('\n--- Clamp Tests (Vector2 parameters) ---');
 const v104 = new Vector2(-5, 15);
 const v105 = new Vector2(0, 5);
 const v106 = new Vector2(10, 10);
-try {
-	v104.clamp(v105, v106);
-	assertEquals(v104.x, 0, 'clamp() should clamp x to min');
-	assertEquals(v104.y, 10, 'clamp() should clamp y to max');
-} catch (e) {
-	testsFailed += 2;
-	console.log('✗ clamp() tests failed - Porffor may not support Vector2 object parameters yet');
-}
+v104.clamp(v105, v106);
+assertEquals(v104.x, 0, 'clamp() should clamp x to min');
+assertEquals(v104.y, 10, 'clamp() should clamp y to max');
 
 // Test 57: dot (requires Vector2 parameter - may fail with Porffor)
 console.log('\n--- Dot Product Tests (Vector2 parameter) ---');
 const v107 = new Vector2(2, 3);
 const v108 = new Vector2(4, 5);
-try {
-	const dotResult = v107.dot(v108);
-	assertEquals(dotResult, 23, 'dot() should return dot product (2*4 + 3*5 = 23)');
-} catch (e) {
-	testsFailed++;
-	console.log('✗ dot() test failed - Porffor may not support Vector2 object parameters yet');
-}
+const dotResult = v107.dot(v108);
+assertEquals(dotResult, 23, 'dot() should return dot product (2*4 + 3*5 = 23)');
 
 // Test 58: cross (requires Vector2 parameter - may fail with Porffor)
 console.log('\n--- Cross Product Tests (Vector2 parameter) ---');
 const v109 = new Vector2(2, 3);
 const v110 = new Vector2(4, 5);
-try {
-	const crossResult = v109.cross(v110);
-	assertEquals(crossResult, -2, 'cross() should return 2D cross product (2*5 - 3*4 = -2)');
-} catch (e) {
-	testsFailed++;
-	console.log('✗ cross() test failed - Porffor may not support Vector2 object parameters yet');
-}
+const crossResult = v109.cross(v110);
+assertEquals(crossResult, -2, 'cross() should return 2D cross product (2*5 - 3*4 = -2)');
 
 // Test 59: angleTo (requires Vector2 parameter - may fail with Porffor)
 console.log('\n--- AngleTo Tests (Vector2 parameter) ---');
 const v111 = new Vector2(1, 0);
 const v112 = new Vector2(0, 1);
-try {
-	const angleToResult = v111.angleTo(v112);
-	// Note: angleTo returns negative angle in Porffor, possibly due to Math.acos implementation
-	assertClose(angleToResult, Math.PI / 2, 0.0001, 'angleTo() should return angle between vectors (FAILS: returns negative angle - Porffor Math.acos issue)');
-} catch (e) {
-	testsFailed++;
-	console.log('✗ angleTo() test failed - Porffor may not support Vector2 object parameters yet');
-}
+const angleToResult = v111.angleTo(v112);
+// Note: angleTo returns negative angle in Porffor, possibly due to Math.acos implementation
+assertClose(angleToResult, Math.PI / 2, 0.0001, 'angleTo() should return angle between vectors');
 
 // Test 60: distanceTo (requires Vector2 parameter - may fail with Porffor)
 console.log('\n--- DistanceTo Tests (Vector2 parameter) ---');
 const v113 = new Vector2(0, 0);
 const v114 = new Vector2(3, 4);
-try {
-	const distResult = v113.distanceTo(v114);
-	assertEquals(distResult, 5, 'distanceTo() should return distance (3-4-5 triangle)');
-} catch (e) {
-	testsFailed++;
-	console.log('✗ distanceTo() test failed - Porffor may not support Vector2 object parameters yet');
-}
+const distResult = v113.distanceTo(v114);
+assertEquals(distResult, 5, 'distanceTo() should return distance (3-4-5 triangle)');
 
 // Test 61: distanceToSquared (requires Vector2 parameter - may fail with Porffor)
 console.log('\n--- DistanceToSquared Tests (Vector2 parameter) ---');
 const v115 = new Vector2(0, 0);
 const v116 = new Vector2(3, 4);
-try {
-	const distSqResult = v115.distanceToSquared(v116);
-	assertEquals(distSqResult, 25, 'distanceToSquared() should return squared distance');
-} catch (e) {
-	testsFailed++;
-	console.log('✗ distanceToSquared() test failed - Porffor may not support Vector2 object parameters yet');
-}
+const distSqResult = v115.distanceToSquared(v116);
+assertEquals(distSqResult, 25, 'distanceToSquared() should return squared distance');
 
 // Test 62: manhattanDistanceTo (requires Vector2 parameter - may fail with Porffor)
 console.log('\n--- ManhattanDistanceTo Tests (Vector2 parameter) ---');
 const v117 = new Vector2(0, 0);
 const v118 = new Vector2(3, 4);
-try {
-	const manhattanDistResult = v117.manhattanDistanceTo(v118);
-	assertEquals(manhattanDistResult, 7, 'manhattanDistanceTo() should return Manhattan distance');
-} catch (e) {
-	testsFailed++;
-	console.log('✗ manhattanDistanceTo() test failed - Porffor may not support Vector2 object parameters yet');
-}
+const manhattanDistResult = v117.manhattanDistanceTo(v118);
+assertEquals(manhattanDistResult, 7, 'manhattanDistanceTo() should return Manhattan distance');
 
 // Test 63: lerp (requires Vector2 parameter - may fail with Porffor)
 console.log('\n--- Lerp Tests (Vector2 parameter) ---');
 const v119 = new Vector2(0, 0);
 const v120 = new Vector2(10, 20);
-try {
-	v119.lerp(v120, 0.5);
-	assertEquals(v119.x, 5, 'lerp() should interpolate x to midpoint');
-	assertEquals(v119.y, 10, 'lerp() should interpolate y to midpoint');
-} catch (e) {
-	testsFailed += 2;
-	console.log('✗ lerp() tests failed - Porffor may not support Vector2 object parameters yet');
-}
+v119.lerp(v120, 0.5);
+assertEquals(v119.x, 5, 'lerp() should interpolate x to midpoint');
+assertEquals(v119.y, 10, 'lerp() should interpolate y to midpoint');
 
 // Test 64: lerpVectors (requires 2 Vector2 parameters - may fail with Porffor)
 console.log('\n--- LerpVectors Tests (Vector2 parameters) ---');
 const v121 = new Vector2();
 const v122 = new Vector2(0, 0);
 const v123 = new Vector2(10, 20);
-try {
-	v121.lerpVectors(v122, v123, 0.5);
-	assertEquals(v121.x, 5, 'lerpVectors() should set x to interpolated value');
-	assertEquals(v121.y, 10, 'lerpVectors() should set y to interpolated value');
-} catch (e) {
-	testsFailed += 2;
-	console.log('✗ lerpVectors() tests failed - Porffor may not support Vector2 object parameters yet');
-}
+v121.lerpVectors(v122, v123, 0.5);
+assertEquals(v121.x, 5, 'lerpVectors() should set x to interpolated value');
+assertEquals(v121.y, 10, 'lerpVectors() should set y to interpolated value');
 
 // Test 65: equals (requires Vector2 parameter - may fail with Porffor)
 console.log('\n--- Equals Tests (Vector2 parameter) ---');
 const v124 = new Vector2(5, 7);
 const v125 = new Vector2(5, 7);
 const v126 = new Vector2(5, 8);
-try {
-	const equalsTrue = v124.equals(v125);
-	const equalsFalse = v124.equals(v126);
-	assert(equalsTrue === true, 'equals() should return true for equal vectors');
-	assert(equalsFalse === false, 'equals() should return false for different vectors');
-} catch (e) {
-	testsFailed += 2;
-	console.log('✗ equals() tests failed - Porffor may not support Vector2 object parameters yet');
-}
+const equalsTrue = v124.equals(v125);
+const equalsFalse = v124.equals(v126);
+assert(equalsTrue === true, 'equals() should return true for equal vectors');
+assert(equalsFalse === false, 'equals() should return false for different vectors');
 
 // Test 66: fromBufferAttribute (requires BufferAttribute - will likely fail with Porffor)
 console.log('\n--- FromBufferAttribute Tests (BufferAttribute parameter) ---');
@@ -669,14 +571,9 @@ console.log('⊘ fromBufferAttribute() test skipped - requires BufferAttribute i
 console.log('\n--- RotateAround Tests (Vector2 parameter) ---');
 const v127 = new Vector2(1, 0);
 const v128 = new Vector2(0, 0);
-try {
-	v127.rotateAround(v128, Math.PI / 2);
-	assertClose(v127.x, 0, 0.0001, 'rotateAround() should rotate x coordinate');
-	assertClose(v127.y, 1, 0.0001, 'rotateAround() should rotate y coordinate');
-} catch (e) {
-	testsFailed += 2;
-	console.log('✗ rotateAround() tests failed - Porffor may not support Vector2 object parameters yet');
-}
+v127.rotateAround(v128, Math.PI / 2);
+assertClose(v127.x, 0, 0.0001, 'rotateAround() should rotate x coordinate');
+assertClose(v127.y, 1, 0.0001, 'rotateAround() should rotate y coordinate');
 
 // Summary
 console.log('\n=== Test Summary ===');
