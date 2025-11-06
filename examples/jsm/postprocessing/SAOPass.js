@@ -134,7 +134,7 @@ class SAOPass extends Pass {
 		this.saoMaterial.defines[ 'PERSPECTIVE_CAMERA' ] = this.camera.isPerspectiveCamera ? 1 : 0;
 		this.saoMaterial.uniforms[ 'tDepth' ].value = depthTexture;
 		this.saoMaterial.uniforms[ 'tNormal' ].value = this.normalRenderTarget.texture;
-		this.saoMaterial.uniforms[ 'size' ].value.set( this.resolution.x, this.resolution.y );
+		this.saoMaterial.uniforms[ 'size' ].value.setXY( this.resolution.x, this.resolution.y );
 		this.saoMaterial.uniforms[ 'cameraInverseProjectionMatrix' ].value.copy( this.camera.projectionMatrixInverse );
 		this.saoMaterial.uniforms[ 'cameraProjectionMatrix' ].value = this.camera.projectionMatrix;
 		this.saoMaterial.blending = NoBlending;
@@ -149,7 +149,7 @@ class SAOPass extends Pass {
 		this.vBlurMaterial.defines[ 'PERSPECTIVE_CAMERA' ] = this.camera.isPerspectiveCamera ? 1 : 0;
 		this.vBlurMaterial.uniforms[ 'tDiffuse' ].value = this.saoRenderTarget.texture;
 		this.vBlurMaterial.uniforms[ 'tDepth' ].value = depthTexture;
-		this.vBlurMaterial.uniforms[ 'size' ].value.set( this.resolution.x, this.resolution.y );
+		this.vBlurMaterial.uniforms[ 'size' ].value.setXY( this.resolution.x, this.resolution.y );
 		this.vBlurMaterial.blending = NoBlending;
 
 		this.hBlurMaterial = new ShaderMaterial( {
@@ -162,7 +162,7 @@ class SAOPass extends Pass {
 		this.hBlurMaterial.defines[ 'PERSPECTIVE_CAMERA' ] = this.camera.isPerspectiveCamera ? 1 : 0;
 		this.hBlurMaterial.uniforms[ 'tDiffuse' ].value = this.blurIntermediateRenderTarget.texture;
 		this.hBlurMaterial.uniforms[ 'tDepth' ].value = depthTexture;
-		this.hBlurMaterial.uniforms[ 'size' ].value.set( this.resolution.x, this.resolution.y );
+		this.hBlurMaterial.uniforms[ 'size' ].value.setXY( this.resolution.x, this.resolution.y );
 		this.hBlurMaterial.blending = NoBlending;
 
 		this.materialCopy = new ShaderMaterial( {
@@ -302,15 +302,15 @@ class SAOPass extends Pass {
 		this.blurIntermediateRenderTarget.setSize( width, height );
 		this.normalRenderTarget.setSize( width, height );
 
-		this.saoMaterial.uniforms[ 'size' ].value.set( width, height );
+		this.saoMaterial.uniforms[ 'size' ].value.setXY( width, height );
 		this.saoMaterial.uniforms[ 'cameraInverseProjectionMatrix' ].value.copy( this.camera.projectionMatrixInverse );
 		this.saoMaterial.uniforms[ 'cameraProjectionMatrix' ].value = this.camera.projectionMatrix;
 		this.saoMaterial.needsUpdate = true;
 
-		this.vBlurMaterial.uniforms[ 'size' ].value.set( width, height );
+		this.vBlurMaterial.uniforms[ 'size' ].value.setXY( width, height );
 		this.vBlurMaterial.needsUpdate = true;
 
-		this.hBlurMaterial.uniforms[ 'size' ].value.set( width, height );
+		this.hBlurMaterial.uniforms[ 'size' ].value.setXY( width, height );
 		this.hBlurMaterial.needsUpdate = true;
 
 	}

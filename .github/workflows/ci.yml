@@ -34,6 +34,9 @@ jobs:
       - name: === Unit addons testing ===
         run: npm run test-unit-addons
 
+      - name: === WebAssembly Vector2 tests ===
+        run: npm run test-wasm-vector2
+
       - name: === Examples ready for release ===
         run: npm run test-e2e-cov
 

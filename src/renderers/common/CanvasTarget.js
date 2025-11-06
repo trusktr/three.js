@@ -112,7 +112,7 @@ class CanvasTarget extends EventDispatcher {
 	 */
 	getDrawingBufferSize( target ) {
 
-		return target.set( this._width * this._pixelRatio, this._height * this._pixelRatio ).floor();
+		return target.setXY( this._width * this._pixelRatio, this._height * this._pixelRatio ).floor();
 
 	}
 
@@ -124,7 +124,7 @@ class CanvasTarget extends EventDispatcher {
 	 */
 	getSize( target ) {
 
-		return target.set( this._width, this._height );
+		return target.setXY( this._width, this._height );
 
 	}
 

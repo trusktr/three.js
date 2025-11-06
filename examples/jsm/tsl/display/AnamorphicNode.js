@@ -128,7 +128,7 @@ class AnamorphicNode extends TempNode {
 	 */
 	setSize( width, height ) {
 
-		this._invSize.value.set( 1 / width, 1 / height );
+		this._invSize.value.setXY( 1 / width, 1 / height );
 
 		width = Math.max( Math.round( width * this.resolutionScale ), 1 );
 		height = Math.max( Math.round( height * this.resolutionScale ), 1 );

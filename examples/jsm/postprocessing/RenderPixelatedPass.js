@@ -125,8 +125,8 @@ class RenderPixelatedPass extends Pass {
 	 */
 	setSize( width, height ) {
 
-		this._resolution.set( width, height );
-		this._renderResolution.set( ( width / this.pixelSize ) | 0, ( height / this.pixelSize ) | 0 );
+		this._resolution.setXY( width, height );
+		this._renderResolution.setXY( ( width / this.pixelSize ) | 0, ( height / this.pixelSize ) | 0 );
 		const { x, y } = this._renderResolution;
 		this._beautyRenderTarget.setSize( x, y );
 		this._normalRenderTarget.setSize( x, y );

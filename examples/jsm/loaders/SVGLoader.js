@@ -1814,7 +1814,7 @@ class SVGLoader extends Loader {
 
 						// Transform ellipse center point
 
-						tempV2.set( curve.aX, curve.aY );
+						tempV2.setXY( curve.aX, curve.aY );
 						transfVec2( tempV2 );
 						curve.aX = tempV2.x;
 						curve.aY = tempV2.y;
@@ -3161,7 +3161,7 @@ class SVGLoader extends Loader {
 					if ( start ) {
 
 						tempV2_1.subVectors( p1, center );
-						tempV2_2.set( tempV2_1.y, - tempV2_1.x );
+						tempV2_2.setXY( tempV2_1.y, - tempV2_1.x );
 
 						tempV2_3.addVectors( tempV2_1, tempV2_2 ).add( center );
 						tempV2_4.subVectors( tempV2_2, tempV2_1 ).add( center );
@@ -3185,7 +3185,7 @@ class SVGLoader extends Loader {
 					} else {
 
 						tempV2_1.subVectors( p2, center );
-						tempV2_2.set( tempV2_1.y, - tempV2_1.x );
+						tempV2_2.setXY( tempV2_1.y, - tempV2_1.x );
 
 						tempV2_3.addVectors( tempV2_1, tempV2_2 ).add( center );
 						tempV2_4.subVectors( tempV2_2, tempV2_1 ).add( center );

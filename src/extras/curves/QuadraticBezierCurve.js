@@ -83,7 +83,7 @@ class QuadraticBezierCurve extends Curve {
 
 		const v0 = this.v0, v1 = this.v1, v2 = this.v2;
 
-		point.set(
+		point.setXY(
 			QuadraticBezier( t, v0.x, v1.x, v2.x ),
 			QuadraticBezier( t, v0.y, v1.y, v2.y )
 		);

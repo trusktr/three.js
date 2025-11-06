@@ -137,7 +137,7 @@ class GaussianBlurNode extends TempNode {
 		width = Math.max( Math.round( width * this.resolutionScale ), 1 );
 		height = Math.max( Math.round( height * this.resolutionScale ), 1 );
 
-		this._invSize.value.set( 1 / width, 1 / height );
+		this._invSize.value.setXY( 1 / width, 1 / height );
 		this._horizontalRT.setSize( width, height );
 		this._verticalRT.setSize( width, height );
 
@@ -174,7 +174,7 @@ class GaussianBlurNode extends TempNode {
 
 		renderer.setRenderTarget( this._horizontalRT );
 
-		this._passDirection.value.set( 1, 0 );
+		this._passDirection.value.setXY( 1, 0 );
 
 		_quadMesh.name = 'Gaussian Blur [ Horizontal Pass ]';
 		_quadMesh.render( renderer );
@@ -184,7 +184,7 @@ class GaussianBlurNode extends TempNode {
 		textureNode.value = this._horizontalRT.texture;
 		renderer.setRenderTarget( this._verticalRT );
 
-		this._passDirection.value.set( 0, 1 );
+		this._passDirection.value.setXY( 0, 1 );
 
 		_quadMesh.name = 'Gaussian Blur [ Vertical Pass ]';
 		_quadMesh.render( renderer );

@@ -86,7 +86,7 @@ class Path extends CurvePath {
 	 */
 	moveTo( x, y ) {
 
-		this.currentPoint.set( x, y ); // TODO consider referencing vectors instead of copying?
+		this.currentPoint.setXY( x, y ); // TODO consider referencing vectors instead of copying?
 
 		return this;
 
@@ -105,7 +105,7 @@ class Path extends CurvePath {
 		const curve = new LineCurve( this.currentPoint.clone(), new Vector2( x, y ) );
 		this.curves.push( curve );
 
-		this.currentPoint.set( x, y );
+		this.currentPoint.setXY( x, y );
 
 		return this;
 
@@ -131,7 +131,7 @@ class Path extends CurvePath {
 
 		this.curves.push( curve );
 
-		this.currentPoint.set( aX, aY );
+		this.currentPoint.setXY( aX, aY );
 
 		return this;
 
@@ -160,7 +160,7 @@ class Path extends CurvePath {
 
 		this.curves.push( curve );
 
-		this.currentPoint.set( aX, aY );
+		this.currentPoint.setXY( aX, aY );
 
 		return this;
 

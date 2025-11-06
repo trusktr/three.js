@@ -186,7 +186,7 @@ class EllipseCurve extends Curve {
 
 		}
 
-		return point.set( x, y );
+		return point.setXY( x, y );
 
 	}
 

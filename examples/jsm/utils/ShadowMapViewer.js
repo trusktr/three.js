@@ -215,7 +215,7 @@ class ShadowMapViewer {
 		this.update = function () {
 
 			this.position.set( this.position.x, this.position.y );
-			this.size.set( this.size.width, this.size.height );
+			this.size.setXY( this.size.width, this.size.height );
 
 		};
 

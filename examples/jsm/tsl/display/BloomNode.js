@@ -271,7 +271,7 @@ class BloomNode extends TempNode {
 			this._renderTargetsHorizontal[ i ].setSize( resx, resy );
 			this._renderTargetsVertical[ i ].setSize( resx, resy );
 
-			this._separableBlurMaterials[ i ].invSize.value.set( 1 / resx, 1 / resy );
+			this._separableBlurMaterials[ i ].invSize.value.setXY( 1 / resx, 1 / resy );
 
 			resx = Math.round( resx / 2 );
 			resy = Math.round( resy / 2 );

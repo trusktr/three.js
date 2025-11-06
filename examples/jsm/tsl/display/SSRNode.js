@@ -313,7 +313,7 @@ class SSRNode extends TempNode {
 		width = Math.round( this.resolutionScale * width );
 		height = Math.round( this.resolutionScale * height );
 
-		this._resolution.value.set( width, height );
+		this._resolution.value.setXY( width, height );
 		this._ssrRenderTarget.setSize( width, height );
 		this._blurRenderTarget.setSize( width, height );
 

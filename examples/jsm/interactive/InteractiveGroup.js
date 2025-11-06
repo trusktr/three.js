@@ -98,7 +98,7 @@ class InteractiveGroup extends Group {
 			const uv = intersection.uv;
 
 			_event.type = event.type;
-			_event.data.set( uv.x, 1 - uv.y );
+			_event.data.setXY( uv.x, 1 - uv.y );
 
 			object.dispatchEvent( _event );
 
@@ -122,7 +122,7 @@ class InteractiveGroup extends Group {
 			const uv = intersection.uv;
 
 			_event.type = _events[ event.type ];
-			_event.data.set( uv.x, 1 - uv.y );
+			_event.data.setXY( uv.x, 1 - uv.y );
 
 			object.dispatchEvent( _event );
 

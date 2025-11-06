@@ -69,7 +69,12 @@
     "test-e2e-cov": "node test/e2e/check-coverage.js",
     "test-e2e-webgpu": "node test/e2e/puppeteer.js --webgpu",
     "test-treeshake": "rollup -c test/rollup.treeshake.config.js",
-    "make-screenshot": "node test/e2e/puppeteer.js --make"
+    "make-screenshot": "node test/e2e/puppeteer.js --make",
+    "test-wasm-vector2": "npx rollup -c test/wasm/rollup.config.js && npx porffor test/wasm/Vector2.test.bundle.js",
+    "run-wasm-vector2": "npx rollup -c test/wasm/rollup.config.js && node test/wasm/run-wasm.js Vector2.test.bundle.js",
+    "compile-wasm-vector2": "npx rollup -c test/wasm/rollup.config.js && npx porffor wasm test/wasm/Vector2.test.bundle.js test/wasm/Vector2.test.wasm",
+    "benchmark-vector2-node": "npx rollup -c test/wasm/rollup.benchmark.config.js && node test/wasm/Vector2.benchmark.bundle.js",
+    "benchmark-vector2-wasm": "npx rollup -c test/wasm/rollup.benchmark.config.js && npx porffor test/wasm/Vector2.benchmark.bundle.js"
   },
   "keywords": [
     "three",
@@ -106,6 +111,7 @@
     "jsdoc": "^4.0.4",
     "magic-string": "^0.30.0",
     "pixelmatch": "^7.0.0",
+    "porffor": "^0.60.22",
     "puppeteer": "^22.0.0",
     "qunit": "^2.19.4",
     "rollup": "^4.6.0",

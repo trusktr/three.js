@@ -163,7 +163,7 @@ class ViewportTextureNode extends TextureNode {
 
 		} else {
 
-			_size.set( renderTarget.width, renderTarget.height );
+			_size.setXY( renderTarget.width, renderTarget.height );
 
 		}
 

@@ -303,7 +303,7 @@ class LineSegments2 extends Mesh {
 	onBeforeRender( renderer ) {
 
 		renderer.getViewport( _viewport );
-		this._resolution.set( _viewport.z, _viewport.w );
+		this._resolution.setXY( _viewport.z, _viewport.w );
 
 	}
 

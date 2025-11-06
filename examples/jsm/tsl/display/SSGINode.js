@@ -309,7 +309,7 @@ class SSGINode extends TempNode {
 	 */
 	setSize( width, height ) {
 
-		this._resolution.value.set( width, height );
+		this._resolution.value.setXY( width, height );
 		this._ssgiRenderTarget.setSize( width, height );
 
 		this._halfProjScale.value = height / ( Math.tan( this._camera.fov * MathUtils.DEG2RAD * 0.5 ) * 2 ) * 0.5;

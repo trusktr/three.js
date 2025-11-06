@@ -142,7 +142,7 @@ class DenoiseNode extends TempNode {
 
 		const map = this.textureNode.value;
 
-		this._resolution.value.set( map.image.width, map.image.height );
+		this._resolution.value.setXY( map.image.width, map.image.height );
 
 	}
 

@@ -269,9 +269,9 @@ class PolyhedronGeometry extends BufferGeometry {
 				b.set( vertexBuffer[ i + 3 ], vertexBuffer[ i + 4 ], vertexBuffer[ i + 5 ] );
 				c.set( vertexBuffer[ i + 6 ], vertexBuffer[ i + 7 ], vertexBuffer[ i + 8 ] );
 
-				uvA.set( uvBuffer[ j + 0 ], uvBuffer[ j + 1 ] );
-				uvB.set( uvBuffer[ j + 2 ], uvBuffer[ j + 3 ] );
-				uvC.set( uvBuffer[ j + 4 ], uvBuffer[ j + 5 ] );
+				uvA.setXY( uvBuffer[ j + 0 ], uvBuffer[ j + 1 ] );
+				uvB.setXY( uvBuffer[ j + 2 ], uvBuffer[ j + 3 ] );
+				uvC.setXY( uvBuffer[ j + 4 ], uvBuffer[ j + 5 ] );
 
 				centroid.copy( a ).add( b ).add( c ).divideScalar( 3 );
 

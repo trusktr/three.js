@@ -36,7 +36,7 @@ export default QUnit.module( 'Maths', () => {
 			assert.ok( a.width = width, 'Set width' );
 			assert.ok( a.height = height, 'Set height' );
 
-			a.set( width, height );
+			a.setXY( width, height );
 			assert.strictEqual( a.width, width, 'Get width' );
 			assert.strictEqual( a.height, height, 'Get height' );
 
@@ -68,7 +68,7 @@ export default QUnit.module( 'Maths', () => {
 			assert.ok( a.x == 0, 'Passed!' );
 			assert.ok( a.y == 0, 'Passed!' );
 
-			a.set( x, y );
+			a.setXY( x, y );
 			assert.ok( a.x == x, 'Passed!' );
 			assert.ok( a.y == y, 'Passed!' );
 
@@ -337,7 +337,7 @@ export default QUnit.module( 'Maths', () => {
 			assert.strictEqual( b.manhattanLength(), y, 'Negative component' );
 			assert.strictEqual( c.manhattanLength(), 0, 'Empty component' );
 
-			a.set( x, y );
+			a.setXY( x, y );
 			assert.strictEqual( a.manhattanLength(), Math.abs( x ) + Math.abs( y ), 'Two components' );
 
 		} );
@@ -569,12 +569,12 @@ export default QUnit.module( 'Maths', () => {
 			assert.ok( c.x == x, 'Passed!' );
 			assert.ok( c.y == y, 'Passed!' );
 
-			c.set( - 2 * x, 2 * y );
+			c.setXY( - 2 * x, 2 * y );
 			c.clamp( b, a );
 			assert.ok( c.x == - x, 'Passed!' );
 			assert.ok( c.y == y, 'Passed!' );
 
-			c.set( - 2 * x, 2 * x );
+			c.setXY( - 2 * x, 2 * x );
 			c.clampScalar( - x, x );
 			assert.equal( c.x, - x, 'scalar clamp x' );
 			assert.equal( c.y, x, 'scalar clamp y' );
@@ -617,7 +617,7 @@ export default QUnit.module( 'Maths', () => {
 			assert.ok( c.length() == 0, 'Passed!' );
 			assert.ok( c.lengthSq() == 0, 'Passed!' );
 
-			a.set( x, y );
+			a.setXY( x, y );
 			assert.ok( a.length() == Math.sqrt( x * x + y * y ), 'Passed!' );
 			assert.ok( a.lengthSq() == ( x * x + y * y ), 'Passed!' );
 

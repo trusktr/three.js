@@ -222,7 +222,7 @@ class SMAANode extends TempNode {
 	 */
 	setSize( width, height ) {
 
-		this._invSize.value.set( 1 / width, 1 / height );
+		this._invSize.value.setXY( 1 / width, 1 / height );
 
 		this._renderTargetEdges.setSize( width, height );
 		this._renderTargetWeights.setSize( width, height );

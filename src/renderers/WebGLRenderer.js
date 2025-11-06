@@ -604,7 +604,7 @@ class WebGLRenderer {
 		 */
 		this.getSize = function ( target ) {
 
-			return target.set( _width, _height );
+			return target.setXY( _width, _height );
 
 		};
 
@@ -651,7 +651,7 @@ class WebGLRenderer {
 		 */
 		this.getDrawingBufferSize = function ( target ) {
 
-			return target.set( _width * _pixelRatio, _height * _pixelRatio ).floor();
+			return target.setXY( _width * _pixelRatio, _height * _pixelRatio ).floor();
 
 		};
 

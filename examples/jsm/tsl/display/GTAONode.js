@@ -231,7 +231,7 @@ class GTAONode extends TempNode {
 		width = Math.round( this.resolutionScale * width );
 		height = Math.round( this.resolutionScale * height );
 
-		this.resolution.value.set( width, height );
+		this.resolution.value.setXY( width, height );
 		this._aoRenderTarget.setSize( width, height );
 
 	}

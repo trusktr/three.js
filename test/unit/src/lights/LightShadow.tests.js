@@ -153,13 +153,13 @@ export default QUnit.module( 'Lights', () => {
 			const c = a.clone();
 			assert.smartEqual( a, c, 'Shadows are identical after clone()' );
 
-			c.mapSize.set( 256, 256 );
+			c.mapSize.setXY( 256, 256 );
 			assert.notDeepEqual( a, c, 'Shadows are different again after change' );
 
 			b.copy( a );
 			assert.smartEqual( a, b, 'Shadows are identical after copy()' );
 
-			b.mapSize.set( 512, 512 );
+			b.mapSize.setXY( 512, 512 );
 			assert.notDeepEqual( a, b, 'Shadows are different again after change' );
 
 		} );

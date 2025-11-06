@@ -180,7 +180,7 @@ class ShadowMapViewer {
 				const depthTexture = light.shadow.map.depthTexture;
 
 				shadowMapUniform.value = depthTexture;
-				textureDimension.value.set( depthTexture.width, depthTexture.height );
+				textureDimension.value.setXY( depthTexture.width, depthTexture.height );
 
 				currentAutoClear = renderer.autoClear;
 				renderer.autoClear = false; // To allow render overlay
@@ -218,7 +218,7 @@ class ShadowMapViewer {
 		this.update = function () {
 
 			this.position.set( this.position.x, this.position.y );
-			this.size.set( this.size.width, this.size.height );
+			this.size.setXY( this.size.width, this.size.height );
 
 		};
 

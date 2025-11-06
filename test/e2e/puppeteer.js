@@ -198,7 +198,10 @@ const exceptionList = [
 	'webgpu_compute_particles_fluid',
 	'webgpu_compute_particles_rain',
 	'webgpu_compute_particles_snow',
-	'webgpu_compute_points'
+	'webgpu_compute_points',
+
+	// WASM test example - console output only, no visual content
+	'misc_wasm_vector2_tests'
 
 ];
 
