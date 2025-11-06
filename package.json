@@ -72,7 +72,9 @@
     "make-screenshot": "node test/e2e/puppeteer.js --make",
     "test-wasm-vector2": "npx rollup -c test/wasm/rollup.config.js && npx porffor test/wasm/Vector2.test.bundle.js",
     "run-wasm-vector2": "npx rollup -c test/wasm/rollup.config.js && node test/wasm/run-wasm.js Vector2.test.bundle.js",
-    "compile-wasm-vector2": "npx rollup -c test/wasm/rollup.config.js && npx porffor wasm test/wasm/Vector2.test.bundle.js test/wasm/Vector2.test.wasm"
+    "compile-wasm-vector2": "npx rollup -c test/wasm/rollup.config.js && npx porffor wasm test/wasm/Vector2.test.bundle.js test/wasm/Vector2.test.wasm",
+    "benchmark-vector2-node": "npx rollup -c test/wasm/rollup.benchmark.config.js && node test/wasm/Vector2.benchmark.bundle.js",
+    "benchmark-vector2-wasm": "npx rollup -c test/wasm/rollup.benchmark.config.js && npx porffor test/wasm/Vector2.benchmark.bundle.js"
   },
   "keywords": [
     "three",

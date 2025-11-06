@@ -4,9 +4,12 @@ This directory contains WebAssembly tests for the Vector2 class using [Porffor](
 
 ## Files
 
-- `Vector2.test.js` - Test file that imports the Vector2 class and tests its features
+- `Vector2.test.js` - Test file that imports the Vector2 class and tests its features (138 tests)
+- `Vector2.benchmark.js` - Performance benchmark file comparing Node.js vs WebAssembly execution
 - `rollup.config.js` - Rollup configuration that bundles the test file with Vector2 for Porffor compilation
+- `rollup.benchmark.config.js` - Rollup configuration for bundling the benchmark file
 - `Vector2.test.bundle.js` - Bundled test file (generated, not committed)
+- `Vector2.benchmark.bundle.js` - Bundled benchmark file (generated, not committed)
 - `Vector2.test.wasm` - Compiled WebAssembly binary (generated, not committed)
 - `run-wasm.js` - Node.js wrapper script to run the bundled tests with Porffor
 - `../examples/misc_wasm_vector2_tests.html` - Browser-based example showing WebAssembly compilation and execution
@@ -45,6 +48,37 @@ Open `examples/misc_wasm_vector2_tests.html` in a web browser or through the Thr
 - Displays the test results in real-time
 
 Note: Running the compiled WASM directly with Node.js requires Porffor's runtime imports, so it's recommended to use one of the above options.
+
+## Performance Benchmarking
+
+Performance benchmarks compare Vector2 operations in Node.js vs Porffor's WebAssembly runtime.
+
+### Run benchmarks in Node.js
+```bash
+npm run benchmark-vector2-node
+```
+
+### Run benchmarks in Porffor WebAssembly
+```bash
+npm run benchmark-vector2-wasm
+```
+
+Both commands will:
+1. Bundle the benchmark file with Vector2 using Rollup
+2. Execute benchmarks measuring 100,000 iterations per operation
+3. Display performance metrics (operations per second, execution time)
+
+**Benchmark Coverage:**
+- Constructor instantiation
+- Setter methods (setXY)
+- Scalar arithmetic (addScalar, multiplyScalar)
+- Vector properties (length, normalize)
+- Math operations (dot product)
+- Clamping (clampScalar)
+- Rounding (floor, ceil, round)
+- Chained operations
+
+**Note:** Methods that require Vector2 object parameters (add, copy, distanceTo, lerp) are skipped in benchmarks due to Porffor limitations with complex type passing.
 
 ## Test Coverage
 
