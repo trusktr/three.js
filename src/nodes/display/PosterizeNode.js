@@ -1,5 +1,6 @@
 import TempNode from '../core/TempNode.js';
 import { nodeProxy } from '../tsl/TSLBase.js';
+/** @import Node from '../core/Node.js'  */
 
 /**
  * Represents a posterize effect which reduces the number of colors
@@ -57,7 +58,7 @@ export default PosterizeNode;
  * TSL function for creating a posterize node.
  *
  * @tsl
- * @function
+ * @type {function(Node, Node): PosterizeNode}
  * @param {Node} sourceNode - The input color.
  * @param {Node} stepsNode - Controls the intensity of the posterization effect. A lower number results in a more blocky appearance.
  * @returns {PosterizeNode}
